@@ -1,0 +1,6 @@
+1. Create a new conda environment (i.e. `conda create --name desc_jl python=3.9`)
+2. Activate the conda environment (`conda activate desc_jl`)
+3. Check to see which version of CUDA is supported on your GPU, if applicable (i.e. via `nvidia-smi`). 
+4. Run the following command based on the CUDA version, or 
+    cpu if no GPU is available: (i.e. `bash install/install.sh cuda12`). Currently, {cuda12, cuda11, cpu} are supported. 
+5. 
