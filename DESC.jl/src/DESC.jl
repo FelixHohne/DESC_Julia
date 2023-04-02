@@ -12,6 +12,10 @@ using PlasmaEquilibriumToolkit
 
 # Write your package code here.
 
+include("../install/install.jl")
+export desc_install;
+
+
 include("exports.jl")
 include("descTypes.jl")
 include("zernike.jl")

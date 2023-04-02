@@ -9,7 +9,6 @@ if [ "$#" -eq 0 ]; then
     exit 1
 fi
 
-
 if [ "$1" == "cpu" ]; then 
     echo "Installing JAX with CPU-only. This may substantially slow \
         down performance. " 
@@ -25,8 +24,6 @@ fi
 conda install pip
 
 echo "Beginning with installing jax with CUDA=$CUDA"
-
-
 
 pip install --upgrade "jax[${CUDA}_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 

@@ -1,5 +1,13 @@
 # values are benchmarked against DESC for the same eq
 
+@testset "ensure that jax is available" begin 
+py"""
+import jax 
+print(jax.default_backend())
+"""
+end 
+
+
 @testset "basic python call from julia" begin 
   py"""
   import numpy as np

@@ -1,5 +1,6 @@
-function pygranso_install()
+function desc_install()
     ENV["PYTHON"] = ENV["CONDA_PREFIX"] * "/bin/python"
     println("Our conda environment is: ", ENV["PYTHON"])
-    Pkg.build() 
+    Pkg.build()
 end
+
