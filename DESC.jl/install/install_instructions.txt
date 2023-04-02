@@ -18,3 +18,5 @@ We can run the following commands to actually call functions:
 2. PkgForML.greet()
 
 We need to run `add Pkg` to actually add Pkg so that inside the Pkg environment we have access to the ability to add PyCall
+
+As of April 2nd, Numba does not support Python 3.11. 
