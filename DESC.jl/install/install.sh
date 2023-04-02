@@ -1,5 +1,6 @@
-CUDA=$1
+#!/bin/bash 
 
+CUDA=$1
 
 echo "General DESC-jl installation..." 
 
@@ -21,6 +22,8 @@ if [ "$1" != "cuda11" ] && [ "$1" != "cuda12" ]; then
         exit 1 
 fi 
 
+conda install pip
+
 echo "Beginning with installing jax with CUDA=$CUDA"
 
 
@@ -30,3 +33,4 @@ pip install --upgrade "jax[${CUDA}_pip]" -f https://storage.googleapis.com/jax-r
 pip install numpy 
 pip install scipy 
 pip install pandas 
+pip install desc-opt

@@ -1,5 +1,5 @@
 function pygranso_install()
-    ENV["PYTHON"] = "/opt/miniconda3/envs/arm_ml/bin/python"  
+    ENV["PYTHON"] = ENV["CONDA_PREFIX"] * "/bin/python"
+    println("Our conda environment is: ", ENV["PYTHON"])
     Pkg.build() 
-    
 end
