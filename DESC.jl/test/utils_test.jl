@@ -11,6 +11,8 @@ end
 @testset "basic python call from julia" begin 
   py"""
   import numpy as np
+  from desc import set_device
+  set_device('gpu')
   from desc.equilibrium import Equilibrium
   """
 end 

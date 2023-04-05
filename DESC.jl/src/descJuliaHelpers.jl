@@ -36,7 +36,7 @@ function jl_objective_aspect_ratio(equilibrium::PyObject, target=2, weight=1, no
 end 
 
 
-function jl_obective_current_density(equilibrium, target = 0, bounds = nothing, weight = 1, normalize = true, normalize_target = true, grid = nothing, name = "current density")
+function jl_objective_current_density(equilibrium, target = 0, bounds = nothing, weight = 1, normalize = true, normalize_target = true, grid = nothing, name = "current density")
     py"""
     import numpy as np
     import desc
@@ -49,6 +49,7 @@ function jl_obective_current_density(equilibrium, target = 0, bounds = nothing, 
     """
     output = py"create_objective_aspect_ratio"()
 end 
+
 
 
 
