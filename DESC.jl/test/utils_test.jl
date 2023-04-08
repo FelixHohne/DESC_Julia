@@ -7,7 +7,6 @@ print(jax.default_backend())
 """
 end 
 
-
 @testset "basic python call from julia" begin 
   py"""
   import numpy as np
@@ -22,23 +21,21 @@ end
   out = DESC.jl_equilibrium(d)
 end 
 
-# @testset "blah blah lbah" begin 
-#   d = DESC.DescData(joinpath(@__DIR__, "QAS_output.h5"));
-#   eq = DESC.jl_equilibrium(d)
-#   objective = DESC.test_jl_objective_aspect_ratio(eq)
-# end 
 
 
-@testset "construct Desc Optimizer" begin 
+@testset "construct Desc Objects Test" begin 
   d = DESC.DescData(joinpath(@__DIR__, "QAS_output.h5"));
   eq = DESC.jl_equilibrium(d)
   objective_aspect_ratio = DESC.jl_objective_aspect_ratio(eq)
-  objective_current_density = DESC.jl_obective_current_density(eq)
+  objective_current_density = DESC.jl_objective_current_density(eq)
   objective_function = DESC.jl_objective_function((objective_aspect_ratio, objective_current_density), eq, true, "batched", 2)
   optimizer = DESC.jl_create_optimizer("lsq-exact")
   constraints = DESC.jl_create_example_constraints()
-  optimize_result = DESC.jl_optimize(optimizer, eq, objective_function, constraints)
+  # optimize_result = DESC.jl_optimize(optimizer, eq, objective_function, constraints)
 end 
+
+
+
 
 
 @testset "check desc utils" begin

@@ -22,7 +22,9 @@ include("zernike.jl")
 include("descUtil.jl")
 include("descSurface.jl")
 include("descOutputs.jl")
-include("descJuliaHelpers.jl")
-include("descOpt.jl")
-
+include("descJuliaCore.jl")
+include("descEquilibrium.jl")
+include("descGeometry.jl")
+include("descObjectives.jl")
+include("descContinuation.jl")
 end

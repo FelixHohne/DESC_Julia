@@ -7,8 +7,7 @@
 
 
 Note: It doesn't seem the standard pip installers actually work properly for JAX. When I try to detect backend, 
-it only states CPU. 
-
+it only states CPU. Recommend using for G2: `pip install --upgrade "jax[cuda12_local]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html`
 Installing JAX with pip actually removes the GPU installation and replaces it with a CPU-based installation. 
 
 try_5 currently has a working GPU-accelerated version of Jax. 
@@ -20,3 +19,5 @@ We can run the following commands to actually call functions:
 We need to run `add Pkg` to actually add Pkg so that inside the Pkg environment we have access to the ability to add PyCall
 
 As of April 2nd, Numba does not support Python 3.11. 
+
+python -m pip install 'desc-opt @ git+https://github.com/FelixHohne/DESC@b23ed965caa69a0b922e7452ea1e78efd3303b81'
