@@ -14,6 +14,34 @@ function jl_objective_aspect_ratio(equilibrium::PyObject, target=2, weight=1, no
     output = py"create_objective_aspect_ratio"()
 end 
 
+function jl_objective_fix_boundary_r(;
+    eq = nothing, 
+    target = nothing,  
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    fixed_boundary = false, 
+    modes = true, 
+    surface_label = nothing, 
+    name = "lcfs R"
+)
+
+    py"""
+    import numpy as np
+    import desc
+    from desc.objectives.linear_objectives import *
+    def create_objective_fix_boundary_r():
+        return FixBoundaryR(
+            eq=$eq, target=$target, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            name=$name)
+    """
+    output = py"create_objective_fix_boundary_r"()
+end 
+
+
+
 
 function jl_objective_bootstrapRedlConsistency(
     equilibrium::PyObject, 

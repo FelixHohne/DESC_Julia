@@ -76,3 +76,22 @@ function jl_equilibrium(;
     output = py"create_eq_obj"()
 
 end 
+
+
+function jl_equilibria_family(
+    args
+)
+    py"""
+    import numpy as np
+    import desc
+    import desc.equilibrium
+
+    def create_eq_fam_obj():
+        eq = desc.equilibrium.EquilibriaFamily(
+            $args
+        )
+        return eq
+    """
+    output = py"create_eq_fam_obj"()
+
+end
