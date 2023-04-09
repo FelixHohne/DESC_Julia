@@ -350,12 +350,104 @@ function jl_objective_mercier_stability(;
     output = py"create_mercier_stability_objective"()
 end 
 
+function jl_objective_radial_force_balance(;
+    eq = nothing,  
+    target = 0, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    grid = nothing, 
+    name = "radial force"
+)
+    py"""
+    import numpy as np
+    import desc
+    # TODO: Grid
+    def create_radial_force_balance_objective():
+        # Not supporting grid
+        return desc.objectives.RadialForceBalance(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, name=$name)
+    """
+    output = py"create_radial_force_balance_objective"()
+end 
+
+
+
+function jl_objective_rotational_transform(;
+    eq = nothing,  
+    target = 0, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    grid = nothing, 
+    name = "rotational transform"
+)
+    py"""
+    import numpy as np
+    import desc
+    # TODO: Grid
+    def create_rotational_transform_objective():
+        # Not supporting grid
+        return desc.objectives.RotationalTransform(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, name=$name)
+    """
+    output = py"create_rotational_transform_objective"()
+end 
+
+
+function jl_objective_toroidal_current(;
+    eq = nothing,  
+    target = 0, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    grid = nothing, 
+    name = "toroidal current"
+)
+    py"""
+    import numpy as np
+    import desc
+    # TODO: Grid
+    def create_toroidal_current_objective():
+        # Not supporting grid
+        return desc.objectives.ToroidalCurrent(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, name=$name)
+    """
+    output = py"create_toroidal_current_objective"()
+end 
 
 
 
 
-
-
-
-
-
+function jl_objective_volume(;
+    eq = nothing,  
+    target = 1, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    grid = nothing, 
+    name = "volume"
+)
+    py"""
+    import numpy as np
+    import desc
+    # TODO: Grid
+    def create_volume_objective():
+        # Not supporting grid
+        return desc.objectives.Volume(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, name=$name)
+    """
+    output = py"create_volume_objective"()
+end 
