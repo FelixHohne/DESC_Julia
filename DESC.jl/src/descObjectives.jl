@@ -1,39 +1,37 @@
 using PyCall
 
+function jl_objective_aspect_ratio(;
+    eq=nothing,
+    target=2,
+    bounds=nothing,
+    weight=1,
+    normalize=true,
+    normalize_target=true,
+    grid=nothing,
+    name="aspect ratio",
+)
 
-function jl_objective_function(objective, equilibrium, use_jit = true, deriv_mode = "batched", verbose = 1)
-    py"""
-    def create_obj_function():
-        # Currently only support one objective
-        return desc.objectives.ObjectiveFunction(
-            objectives=($objective),
-            eq=$equilibrium, 
-            use_jit=$use_jit, 
-            deriv_mode=$deriv_mode, 
-            verbose=$verbose
-    )
-    """
-    output = py"create_obj_function"()
-
-end 
-
-function jl_objective_aspect_ratio(equilibrium::PyObject, target=2, weight=1, normalize=true, normalize_target=true, name="aspect_ratio")
     py"""
     import numpy as np
     import desc
     import desc.objectives
-    def create_objective_aspect_ratio():
+    def create_objective_quasisymmetry_two_term():
         # Not supporting grid
         return desc.objectives.AspectRatio(
-            eq=$equilibrium, target=$target, weight=$weight, 
-            normalize=$normalize, normalize_target=$normalize_target, 
+            eq=$eq,
+            target=$target,
+            bounds=$bounds,
+            weight=$weight,
+            normalize=$normalize,
+            normalize_target=$normalize_target,
             name=$name)
     """
-    output = py"create_objective_aspect_ratio"()
+    output = py"create_objective_quasisymmetry_two_term"()
 end 
 
+
 function jl_objective_quasisymmetry_two_term(;
-    eq, 
+    eq = nothing, 
     target=0,  
     bounds = nothing, 
     weight=1, 
@@ -51,7 +49,7 @@ function jl_objective_quasisymmetry_two_term(;
     def create_objective_quasisymmetry_two_term():
         # Not supporting grid
         return desc.objectives.QuasisymmetryTwoTerm(
-            eq=$equilibrium, target=$target, weight=$weight, 
+            eq=$eq, target=$target, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
             name=$name)
     """
@@ -59,7 +57,7 @@ function jl_objective_quasisymmetry_two_term(;
 end 
 
 function jl_objective_bootstrapRedlConsistency(
-    equilibrium::PyObject, 
+    eq = nothing, 
     target = 0, 
     bounds = nothing, 
     weight = 1, 

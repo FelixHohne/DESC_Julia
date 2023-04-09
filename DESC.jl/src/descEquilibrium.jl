@@ -4,6 +4,8 @@ function jl_equilibrium(descData)
     py"""
     import numpy as np
     import desc
+    from desc import set_device
+    set_device('gpu')
     
     def create_eq_obj():
         eq = desc.equilibrium.Equilibrium(
@@ -46,6 +48,8 @@ function jl_equilibrium(;
     py"""
     import numpy as np
     import desc
+    from desc import set_device
+    set_device('gpu')
     import desc.equilibrium
 
     def create_eq_obj():
@@ -84,6 +88,8 @@ function jl_equilibria_family(
     py"""
     import numpy as np
     import desc
+    from desc import set_device
+    set_device('gpu')
     import desc.equilibrium
 
     def create_eq_fam_obj():
@@ -95,3 +101,34 @@ function jl_equilibria_family(
     output = py"create_eq_fam_obj"()
 
 end
+
+
+
+function jl_save_equilibrium(eq, file_name; file_format = "hdf5")
+    py"""
+    import numpy as np
+    import desc
+    from desc import set_device
+    set_device('gpu')
+    import desc.equilibrium
+    def save_eq():
+        $eq.save($file_name, $file_format) 
+    """
+    py"save_eq"()
+end 
+
+
+function jl_load_equilibrium(load_from, file_format) 
+    py"""
+    import numpy as np
+    import desc
+    from desc import set_device
+    set_device('gpu')
+    import desc.equilibrium
+    def load_eq():
+        return desc.equilibrium.Equilibrium.load($load_from, $file_format)
+    """
+    output = py"load_eq"()
+end 
+
+

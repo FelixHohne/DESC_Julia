@@ -1,9 +1,18 @@
-@testset "Construct Linear Objectives" begin 
+FULL_RUN = false
 
-  objective = DESC.jl_objective_fix_boundary_r()
+@testset "saveEquilibrium" begin 
+  eq = DESC.jl_equilibrium()
+  DESC.jl_save_equilibrium(eq, "test_eq.hdf5")
+end 
+
+@testset "loadEquilibrium" begin 
+  eq = DESC.jl_load_equilibrium("test_eq.hdf5", "hdf5")
 end 
 
 
+@testset "Construct Linear Objectives" begin 
+  objective = DESC.jl_objective_fix_boundary_r()
+end 
 
 @testset "constructEqFamily" begin 
   py"""
@@ -12,9 +21,7 @@ end
 
   eq = desc.equilibrium.Equilibrium()
   eq_fam = desc.equilibrium.EquilibriaFamily(eq)
-
   """
-
   eq = DESC.jl_equilibrium()
   eq_fam = DESC.jl_equilibria_family(eq)
 end 
@@ -26,8 +33,27 @@ end
 end 
 
 
+@testset "extract R modes" begin 
+    surf = DESC.jl_fourierRZToroidalSurface(
+      [1, 0.125, 0.1],
+      [-0.125, -0.1],
+      [[0, 0], [1, 0], [0, 1]],
+      [[-1, 0], [0, -1]],
+      4
+    )
 
-@testset "QAS_output.h5" begin 
+    eq = DESC.jl_equilibrium(
+        M = 8, 
+        N = 8, 
+        Psi=0.04, 
+        surface=surf
+    )
+
+end 
+
+
+@testset "set eq for QAS_output.h5" begin 
+  if FULL_RUN 
     py"""
     import numpy as np
     import desc
@@ -51,18 +77,25 @@ end
     )
 
     eq = last(DESC.jl_solve_continuation_automatic(eq, objective = "force", verbose=3, bdry_step=0.5))
-    eq_fam = DESC.jl_equilibria_family(eq)
+    DESC.jl_save_equilibrium(eq, "QAS_output_continuation_automatic.hdf5")
+  end 
+end 
 
-    grid = LinearGrid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
+
+@testset "QAS_output.h5" begin 
+    eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
+    eq_fam = DESC.jl_equilibria_family(eq)
+    grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
 
     for n in 1:eq.M
       print(n)
       println(" Optimizing boundary modes with M, N <= %d\n", n); 
       objective = DESC.jl_objective_function(
-        DESC.jl_objective_quasisymmetry_two_term(helicity = (1, eq.NFP), grid=grid, normalize=false),
-        DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)
+        (DESC.jl_objective_quasisymmetry_two_term(helicity = (1, eq.NFP), grid=grid, normalize=false),
+        DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)), 
         verbose = 0
       )
+
     end 
 
 
