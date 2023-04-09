@@ -51,24 +51,6 @@ function jl_objective_current_density(equilibrium, target = 0, bounds = nothing,
 end 
 
 
-
-
-function jl_objective_function(objective, equilibrium, use_jit = true, deriv_mode = "batched", verbose = 1)
-    py"""
-    def create_obj_function():
-        # Currently only support one objective
-        return desc.objectives.ObjectiveFunction(
-            objectives=($objective),
-            eq=$equilibrium, 
-            use_jit=$use_jit, 
-            deriv_mode=$deriv_mode, 
-            verbose=$verbose
-    )
-    """
-    output = py"create_obj_function"()
-
-end 
-
 function jl_create_optimizer(method) 
     py"""
     def create_optimizer():

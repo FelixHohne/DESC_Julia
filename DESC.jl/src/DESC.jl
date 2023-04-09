@@ -15,7 +15,6 @@ using PlasmaEquilibriumToolkit
 include("../install/install.jl")
 export desc_install;
 
-
 include("exports.jl")
 include("descTypes.jl")
 include("zernike.jl")
@@ -28,4 +27,5 @@ include("descGrid.jl")
 include("descGeometry.jl")
 include("descObjectives.jl")
 include("descContinuation.jl")
+include("descLinearObjectives.jl")
 end

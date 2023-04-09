@@ -37,7 +37,7 @@ function jl_linear_grid(;
 
 end 
 
-function jl_quadrature_grid(;
+function jl_quadrature_grid(
     L, 
     M, 
     N; 
@@ -59,7 +59,7 @@ function jl_quadrature_grid(;
     output = py"create_quadrature_grid"()
 end 
 
-function jl_concentric_grid(;
+function jl_concentric_grid(
     L, 
     M, 
     N; 

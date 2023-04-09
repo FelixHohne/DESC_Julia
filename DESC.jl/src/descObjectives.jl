@@ -1,9 +1,27 @@
 using PyCall
 
+
+function jl_objective_function(objective, equilibrium, use_jit = true, deriv_mode = "batched", verbose = 1)
+    py"""
+    def create_obj_function():
+        # Currently only support one objective
+        return desc.objectives.ObjectiveFunction(
+            objectives=($objective),
+            eq=$equilibrium, 
+            use_jit=$use_jit, 
+            deriv_mode=$deriv_mode, 
+            verbose=$verbose
+    )
+    """
+    output = py"create_obj_function"()
+
+end 
+
 function jl_objective_aspect_ratio(equilibrium::PyObject, target=2, weight=1, normalize=true, normalize_target=true, name="aspect_ratio")
     py"""
     import numpy as np
     import desc
+    import desc.objectives
     def create_objective_aspect_ratio():
         # Not supporting grid
         return desc.objectives.AspectRatio(
@@ -29,6 +47,7 @@ function jl_objective_quasisymmetry_two_term(;
     py"""
     import numpy as np
     import desc
+    import desc.objectives
     def create_objective_quasisymmetry_two_term():
         # Not supporting grid
         return desc.objectives.QuasisymmetryTwoTerm(
@@ -38,64 +57,6 @@ function jl_objective_quasisymmetry_two_term(;
     """
     output = py"create_objective_quasisymmetry_two_term"()
 end 
-
-
-function jl_objective_fix_boundary_r(;
-    eq = nothing, 
-    target = nothing,  
-    bounds = nothing, 
-    weight = 1, 
-    normalize = true, 
-    normalize_target = true, 
-    fixed_boundary = false, 
-    modes = true, 
-    surface_label = nothing, 
-    name = "lcfs R"
-)
-
-    py"""
-    import numpy as np
-    import desc
-    from desc.objectives.linear_objectives import *
-    def create_objective_fix_boundary_r():
-        return FixBoundaryR(
-            eq=$eq, target=$target, weight=$weight, 
-            normalize=$normalize, normalize_target=$normalize_target, 
-            name=$name)
-    """
-    output = py"create_objective_fix_boundary_r"()
-end 
-
-
-function jl_objective_fix_boundary_z(;
-    eq = nothing, 
-    target = nothing,  
-    bounds = nothing, 
-    weight = 1, 
-    normalize = true, 
-    normalize_target = true, 
-    fixed_boundary = false, 
-    modes = true, 
-    surface_label = nothing, 
-    name = "lcfs Z"
-)
-
-    py"""
-    import numpy as np
-    import desc
-    from desc.objectives.linear_objectives import *
-    def create_objective_fix_boundary_z():
-        return FixBoundaryR(
-            eq=$eq, target=$target, weight=$weight, 
-            normalize=$normalize, normalize_target=$normalize_target, 
-            name=$name)
-    """
-    output = py"create_objective_fix_boundary_z"()
-end 
-
-
-
-
 
 function jl_objective_bootstrapRedlConsistency(
     equilibrium::PyObject, 
@@ -227,7 +188,7 @@ function jl_objective_force_balance(;
 end 
 
 
-function jl_objective_generic_objective(;
+function jl_objective_generic_objective(
     f; 
     eq = nothing,  
     target = 0, 

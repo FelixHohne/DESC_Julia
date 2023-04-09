@@ -51,9 +51,20 @@ end
     )
 
     eq = last(DESC.jl_solve_continuation_automatic(eq, objective = "force", verbose=3, bdry_step=0.5))
-    println(eq)
-
     eq_fam = DESC.jl_equilibria_family(eq)
+
+    grid = LinearGrid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
+
+    for n in 1:eq.M
+      print(n)
+      println(" Optimizing boundary modes with M, N <= %d\n", n); 
+      objective = DESC.jl_objective_function(
+        DESC.jl_objective_quasisymmetry_two_term(helicity = (1, eq.NFP), grid=grid, normalize=false),
+        DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)
+        verbose = 0
+      )
+    end 
+
 
 
 
