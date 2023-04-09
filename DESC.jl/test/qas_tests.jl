@@ -84,6 +84,7 @@ end
 
 @testset "QAS_output.h5" begin 
     eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
+    println(eq)
     eq_fam = DESC.jl_equilibria_family(eq)
     grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
 
@@ -96,13 +97,23 @@ end
         verbose = 0
       )
 
-    end 
+      R_abs = abs.(eq.surface.R_basis.modes)
+      # println("R_abs")
+      # display(R_abs)
+      max_Rabs = maximum(R_abs, dims=1)
+      # println("max Rabs")
+      # display(max_Rabs)
+      # println("Selection")
+      R_elem_mode = eq.surface.R_basis.modes[findall(>(n), max_Rabs), :]
+      R_modes = vcat([0, 0, 0], R_elem_mode)
 
-
-
-
-
-
+      Z_abs = abs.(eq.surface.Z_basis.modes)
+      max_Rabs = maximum(Z_abs, dims=1)
+      Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Rabs), :]
 
 
   end 
+
+
+
+end 
