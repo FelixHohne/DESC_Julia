@@ -133,4 +133,101 @@ function jl_objective_fix_axis_r(;
     output = py"create_objective_fix_axis_r"()
 end 
 
+function jl_objective_fix_pressure(;
+    self,
+    eq=nothing,
+    target=nothing,
+    bounds=nothing,
+    weight=1,
+    normalize=true,
+    normalize_target=true,
+    profile=nothing,
+    indices=true,
+    name="fixed-pressure",
+)
+    py"""
+    import numpy as np
+    import desc
+    from desc.objectives.linear_objectives import *
+    def create_objective_fix_pressure():
+        return FixPressure(
+            eq=$eq,
+            target=$target,
+            bounds=$bounds,
+            weight=$weight,
+            normalize=$normalize,
+            normalize_target=$normalize_target,
+            profile=$profile,
+            indices=$indices,
+            name=$name,
+        )
+    """
+    output = py"create_objective_fix_pressure"()
+end 
+
+
+function jl_objective_fix_current(;
+    self,
+    eq=nothing,
+    target=nothing,
+    bounds=nothing,
+    weight=1,
+    normalize=true,
+    normalize_target=true,
+    profile=nothing,
+    indices=true,
+    name="fixed-current",
+)
+    py"""
+    import numpy as np
+    import desc
+    from desc.objectives.linear_objectives import *
+    def create_objective_fix_current():
+        return FixCurrent(
+            eq=$eq,
+            target=$target,
+            bounds=$bounds,
+            weight=$weight,
+            normalize=$normalize,
+            normalize_target=$normalize_target,
+            profile=$profile,
+            indices=$indices,
+            name=$name,
+        )
+    """
+    output = py"create_objective_fix_current"()
+end 
+
+
+function jl_objective_fix_psi(;
+    self,
+    eq=nothing,
+    target=nothing,
+    bounds=nothing,
+    weight=1,
+    normalize=true,
+    normalize_target=true,
+    name="fixed-Psi",
+)
+    py"""
+    import numpy as np
+    import desc
+    from desc.objectives.linear_objectives import *
+    def create_objective_fix_psi():
+        return FixPsi(
+            eq=$eq,
+            target=$target,
+            bounds=$bounds,
+            weight=$weight,
+            normalize=$normalize,
+            normalize_target=$normalize_target,
+            name=$name,
+        )
+    """
+    output = py"create_objective_fix_psi"()
+end 
+
+
+
+
 

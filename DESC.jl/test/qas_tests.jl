@@ -98,12 +98,7 @@ end
       )
 
       R_abs = abs.(eq.surface.R_basis.modes)
-      # println("R_abs")
-      # display(R_abs)
       max_Rabs = maximum(R_abs, dims=1)
-      # println("max Rabs")
-      # display(max_Rabs)
-      # println("Selection")
       R_elem_mode = eq.surface.R_basis.modes[findall(>(n), max_Rabs), :]
       R_modes = vcat([0, 0, 0], R_elem_mode)
 
@@ -111,6 +106,17 @@ end
       max_Rabs = maximum(Z_abs, dims=1)
       Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Rabs), :]
 
+      constraints = (
+        DESC.jl_objective_force_balance(), 
+        DESC.jl_objective_fix_boundary_r(modes=R_modes), 
+        DESC.jl_objective_fix_boundary_z(modes=Z_modes), 
+        DESC.jl_objective_fix_pressure(), 
+        DESC.jl_objective_fix_current(), 
+        DESC.jl_objective_fix_current(), 
+        DESC.jl_objective_fix_psi()
+      )
+
+      
 
   end 
 
