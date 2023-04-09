@@ -37,4 +37,55 @@ function jl_linear_grid(;
 
 end 
 
+function jl_quadrature_grid(;
+    L, 
+    M, 
+    N; 
+    NFP = 1
+)
+    py"""
+    import desc 
+    import desc.grid
+    import numpy as np  
+
+    def create_quadrature_grid():
+        return desc.grid.QuadratureGrid(
+            L = $L, 
+            M = $M, 
+            N = $N, 
+            NFP = $NFP
+        )
+    """
+    output = py"create_quadrature_grid"()
+end 
+
+function jl_concentric_grid(;
+    L, 
+    M, 
+    N; 
+    NFP = 1, 
+    sym=false, 
+    axis=false, 
+    node_pattern = "jacobi"
+)
+    py"""
+    import desc 
+    import desc.grid
+    import numpy as np  
+
+    def create_concentric_grid():
+        return desc.grid.ConcentricGrid(
+            L = $L, 
+            M = $M, 
+            N = $N, 
+            NFP = $NFP, 
+            sym=$sym, 
+            axis=$axis, 
+            node_pattern = $node_pattern
+        )
+    """
+    output = py"create_concentric_grid"()
+end 
+
+
 
