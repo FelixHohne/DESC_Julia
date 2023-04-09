@@ -375,6 +375,112 @@ function jl_objective_radial_force_balance(;
 end 
 
 
+function jl_objective_plasma_vessel_distance(;
+    eq = nothing,  
+    target = nothing, 
+    bounds = (1, Inf), 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    surface_grid = nothing, 
+    plasma_grid = nothing, 
+    name = "plasma vessel distance"
+)
+    py"""
+    import numpy as np
+    import desc
+    def create_plasma_vessel_distance_objective():
+        return desc.objectives.PlasmaVesselDistance(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            surface_grid=$surface_grid, plasma_grid=$plasma_grid, 
+            name=$name)
+    """
+    output = py"create_plasma_vessel_distance_objective"()
+end 
+
+
+function jl_objective_principal_curvature(;
+    eq = nothing,  
+    target = 1, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    grid = nothing, 
+    name = "principal-curvature"
+)
+    py"""
+    import numpy as np
+    import desc
+    # TODO: Grid
+    def create_principal_curvature_objective():
+        return desc.objectives.PrincipalCurvature(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, name=$name)
+    """
+    output = py"create_principal_curvature_objective"()
+end 
+
+
+function jl_objective_quasisymmetry_boozer(;
+    eq = nothing,  
+    target = 0, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    grid = nothing, 
+    helicity=(1,0), 
+    M_booz=nothing, 
+    N_booz = nothing, 
+    name = "QS Boozer"
+)
+    py"""
+    import numpy as np
+    import desc
+    # TODO: Grid
+    def create_quasisymmetry_boozer_objective():
+        # Not supporting grid
+        return desc.objectives.QuasisymmetryBoozer(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, helicity=$helicity, M_booz=$M_booz, N_booz=$N_booz, 
+            name=$name)
+    """
+    output = py"create_quasisymmetry_boozer_objective"()
+end 
+
+
+
+function jl_objective_quasisymmetry_triple_product(;
+    eq = nothing,  
+    target = 0, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    grid = nothing, 
+    name = "QS triple product"
+)
+    py"""
+    import numpy as np
+    import desc
+    # TODO: Grid
+    def create_quasisymmetry_triple_product_objective():
+        # Not supporting grid
+        return desc.objectives.QuasisymmetryTripleProduct(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, name=$name)
+    """
+    output = py"create_quasisymmetry_triple_product_objective"()
+end 
+
+
+
+
 
 function jl_objective_rotational_transform(;
     eq = nothing,  
