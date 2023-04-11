@@ -25,7 +25,6 @@ function jl_create_optimizer(method)
     def create_optimizer():
         return desc.optimize.Optimizer(
             $method, 
-            # $objectiveFunction
         )
     """
     output = py"create_optimizer"()

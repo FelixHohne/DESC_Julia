@@ -131,4 +131,47 @@ function jl_load_equilibrium(load_from, file_format)
     output = py"load_eq"()
 end 
 
+function jl_optimize_equilibrium(
+    eq; 
+    objective=nothing,
+    constraints= nothing,
+    optimizer="proximal-lsq-exact",
+    ftol= nothing,
+    xtol= nothing,
+    gtol= nothing,
+    maxiter=50,
+    x_scale="auto",
+    options=Dict(),
+    verbose=1,
+    copy=false
+)
+
+    py"""
+    import numpy as np
+    import desc
+    from desc import set_device
+    set_device('gpu')
+    import desc.equilibrium
+
+    def optimize():
+        return $eq.optimize(
+            objective=$objective,
+            constraints=$constraints,
+            optimizer=$optimizer,
+            ftol=$ftol,
+            xtol=$xtol,
+            gtol=$gtol,
+            maxiter=$maxiter,
+            x_scale=$x_scale,
+            options=$options,
+            verbose=$verbose,
+            copy=$copy
+        )
+    """
+    result = py"optimize"()
+
+
+
+end
+
 

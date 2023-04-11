@@ -57,7 +57,7 @@ function jl_objective_fix_boundary_z(;
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
             fixed_boundary = $fixed_boundary, modes = $modes, 
-            surface_level = $surface_label, 
+            surface_label = $surface_label, 
             name=$name)
     """
     output = py"create_objective_fix_boundary_z"()
@@ -107,7 +107,6 @@ function jl_objective_fix_theta_sfl(;
 end 
 
 function jl_objective_fix_axis_r(;
-    self,
     eq=nothing,
     target=nothing,
     weight=1,
@@ -134,7 +133,6 @@ function jl_objective_fix_axis_r(;
 end 
 
 function jl_objective_fix_pressure(;
-    self,
     eq=nothing,
     target=nothing,
     bounds=nothing,
@@ -167,7 +165,6 @@ end
 
 
 function jl_objective_fix_current(;
-    self,
     eq=nothing,
     target=nothing,
     bounds=nothing,
@@ -200,7 +197,6 @@ end
 
 
 function jl_objective_fix_psi(;
-    self,
     eq=nothing,
     target=nothing,
     bounds=nothing,

@@ -116,7 +116,25 @@ end
         DESC.jl_objective_fix_psi()
       )
 
+      optimizer = DESC.jl_create_optimizer("lsq-exact")
+      eq_new, out = DESC.jl_optimize_equilibrium(
+        last(eq_fam); 
+        objective=objective, 
+        constraints=constraints, 
+        optimizer=optimizer, 
+        maxiter=50, 
+        verbose=3, 
+        copy=true, 
+        options = Dict(
+          "initial_trust_radius" => 0.5,
+          "perturb_options" => Dict("verbose" => 0),
+          "solve_options" => Dict("verbose" => 0)
+        )
+      )
+
+      push!(eq_fam, eq_new)
       
+    
 
   end 
 
