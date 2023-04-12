@@ -96,15 +96,35 @@ end
         DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)), 
         verbose = 0
       )
+      
 
       R_abs = abs.(eq.surface.R_basis.modes)
-      max_Rabs = maximum(R_abs, dims=1)
+      println("R abs")
+      println(size(R_abs))
+      max_Rabs = maximum(R_abs, dims=2)
+      # equivalent to np.squeeze. See https://stackoverflow.com/questions/52505760/dropping-singleton-dimensions-in-julia
+      max_Rabs = dropdims(max_Rabs, dims = tuple(findall(size(max_Rabs) .== 1)...))
+      println("max Rabs")
+      println(size(max_Rabs))
+      println(">n shape")
+      println(size(findall(>(n), max_Rabs)))
+      println(findall(>(n), max_Rabs))
       R_elem_mode = eq.surface.R_basis.modes[findall(>(n), max_Rabs), :]
-      R_modes = vcat([0, 0, 0], R_elem_mode)
-
+      println("All before v_stack")
+      println(size(R_elem_mode))
+      R_modes = vcat([0 0 0], R_elem_mode)
+    
       Z_abs = abs.(eq.surface.Z_basis.modes)
-      max_Rabs = maximum(Z_abs, dims=1)
-      Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Rabs), :]
+      max_Zabs = maximum(Z_abs, dims=2)
+      max_Zabs = dropdims(max_Zabs, dims = tuple(findall(size(max_Zabs) .== 1)...))
+      Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Zabs), :]
+
+      println("R Modes")
+      display(R_modes)
+
+      println("Z Modes")
+      display(Z_modes)
+
 
       constraints = (
         DESC.jl_objective_force_balance(), 
