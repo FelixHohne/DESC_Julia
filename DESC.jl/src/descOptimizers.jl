@@ -59,7 +59,18 @@ function jl_create_example_constraints()
     constraints = py"create_constraints"() 
 end 
 
-function jl_optimize(optimizer, equilibrium, objective, constraints = (), ftol = nothing, xtol = nothing, gtol = nothing, x_scale = "auto", verbose = 1, maxiter = nothing, options = Dict())
+function jl_optimize(
+    optimizer, 
+    equilibrium, 
+    objective, 
+    constraints = (), 
+    ftol = nothing, 
+    xtol = nothing, 
+    gtol = nothing, 
+    x_scale = "auto", 
+    verbose = 1, 
+    maxiter = nothing, 
+    options = Dict())
 
     py"""
     def execute_optimize_command():

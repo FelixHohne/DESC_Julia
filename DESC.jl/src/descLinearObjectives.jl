@@ -7,7 +7,6 @@ function jl_objective_fix_boundary_r(;
     weight=1,
     normalize=true,
     normalize_target=true,
-    fixed_boundary=false,
     modes=true,
     surface_label=nothing,
     name="lcfs R"
@@ -25,7 +24,6 @@ function jl_objective_fix_boundary_r(;
             weight=$weight,
             normalize=$normalize,
             normalize_target=$normalize_target,
-            fixed_boundary=$fixed_boundary,
             modes=$modes,
             surface_label=$surface_label,
             name=$name
@@ -42,7 +40,6 @@ function jl_objective_fix_boundary_z(;
     weight = 1, 
     normalize = true, 
     normalize_target = true, 
-    fixed_boundary = false, 
     modes = true, 
     surface_label = nothing, 
     name = "lcfs Z"
@@ -56,7 +53,7 @@ function jl_objective_fix_boundary_z(;
         return FixBoundaryZ(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
-            fixed_boundary = $fixed_boundary, modes = $modes, 
+            modes = $modes, 
             surface_label = $surface_label, 
             name=$name)
     """

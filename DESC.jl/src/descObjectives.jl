@@ -15,7 +15,7 @@ function jl_objective_aspect_ratio(;
     import numpy as np
     import desc
     import desc.objectives
-    def create_objective_quasisymmetry_two_term():
+    def create_objective_aspect_ratio():
         # Not supporting grid
         return desc.objectives.AspectRatio(
             eq=$eq,
@@ -26,7 +26,7 @@ function jl_objective_aspect_ratio(;
             normalize_target=$normalize_target,
             name=$name)
     """
-    output = py"create_objective_quasisymmetry_two_term"()
+    output = py"create_objective_aspect_ratio"()
 end 
 
 
@@ -47,11 +47,10 @@ function jl_objective_quasisymmetry_two_term(;
     import desc
     import desc.objectives
     def create_objective_quasisymmetry_two_term():
-        # Not supporting grid
         return desc.objectives.QuasisymmetryTwoTerm(
-            eq=$eq, target=$target, weight=$weight, 
+            eq=$eq, target=$target, bounds=$bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
-            name=$name)
+            grid=$grid, helicity=$helicity, name=$name)
     """
     output = py"create_objective_quasisymmetry_two_term"()
 end 
@@ -173,9 +172,7 @@ function jl_objective_force_balance(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_objective_force_balance():
-        # Not supporting grid
         return desc.objectives.ForceBalance(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 

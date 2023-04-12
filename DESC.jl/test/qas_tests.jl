@@ -83,10 +83,10 @@ end
 
 
 @testset "QAS_output.h5" begin 
-    eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
-    println(eq)
-    eq_fam = DESC.jl_equilibria_family(eq)
-    grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
+  eq = DESC.jl_load_equilibrium("../../correct_solve_continuation_automatic_eq", "hdf5")
+  println(eq)
+  eq_fam = DESC.jl_equilibria_family(eq)
+  grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
 
     for n in 1:eq.M
       print(n)
@@ -96,22 +96,14 @@ end
         DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)), 
         verbose = 0
       )
-      
+
 
       R_abs = abs.(eq.surface.R_basis.modes)
-      println("R abs")
-      println(size(R_abs))
       max_Rabs = maximum(R_abs, dims=2)
       # equivalent to np.squeeze. See https://stackoverflow.com/questions/52505760/dropping-singleton-dimensions-in-julia
+      # ensures indexing with findall broadcasts correctly
       max_Rabs = dropdims(max_Rabs, dims = tuple(findall(size(max_Rabs) .== 1)...))
-      println("max Rabs")
-      println(size(max_Rabs))
-      println(">n shape")
-      println(size(findall(>(n), max_Rabs)))
-      println(findall(>(n), max_Rabs))
       R_elem_mode = eq.surface.R_basis.modes[findall(>(n), max_Rabs), :]
-      println("All before v_stack")
-      println(size(R_elem_mode))
       R_modes = vcat([0 0 0], R_elem_mode)
     
       Z_abs = abs.(eq.surface.Z_basis.modes)
@@ -119,19 +111,11 @@ end
       max_Zabs = dropdims(max_Zabs, dims = tuple(findall(size(max_Zabs) .== 1)...))
       Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Zabs), :]
 
-      println("R Modes")
-      display(R_modes)
-
-      println("Z Modes")
-      display(Z_modes)
-
-
       constraints = (
         DESC.jl_objective_force_balance(), 
         DESC.jl_objective_fix_boundary_r(modes=R_modes), 
         DESC.jl_objective_fix_boundary_z(modes=Z_modes), 
         DESC.jl_objective_fix_pressure(), 
-        DESC.jl_objective_fix_current(), 
         DESC.jl_objective_fix_current(), 
         DESC.jl_objective_fix_psi()
       )
