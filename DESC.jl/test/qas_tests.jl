@@ -1,4 +1,5 @@
 FULL_RUN = false
+using PyCall
 
 @testset "saveEquilibrium" begin 
   eq = DESC.jl_equilibrium()
@@ -10,9 +11,10 @@ end
 end 
 
 
-@testset "Construct Linear Objectives" begin 
-  objective = DESC.jl_objective_fix_boundary_r()
-end 
+# @testset "Construct Linear Objectives" begin 
+#   objective = DESC.jl_objective_fix_boundary_r()
+#   objective = DESC.jl_objective_fix_boundary_r(modes = false)
+# end 
 
 @testset "constructEqFamily" begin 
   py"""
@@ -83,12 +85,14 @@ end
 
 
 @testset "QAS_output.h5" begin 
-  eq = DESC.jl_load_equilibrium("../../correct_solve_continuation_automatic_eq", "hdf5")
+  eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
   println(eq)
   eq_fam = DESC.jl_equilibria_family(eq)
   grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
 
-    for n in 1:eq.M
+    # for n in 1:eq.M
+    n = 1
+
       print(n)
       println(" Optimizing boundary modes with M, N <= %d\n", n); 
       objective = DESC.jl_objective_function(
@@ -111,6 +115,7 @@ end
       max_Zabs = dropdims(max_Zabs, dims = tuple(findall(size(max_Zabs) .== 1)...))
       Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Zabs), :]
 
+
       constraints = (
         DESC.jl_objective_force_balance(), 
         DESC.jl_objective_fix_boundary_r(modes=R_modes), 
@@ -120,13 +125,19 @@ end
         DESC.jl_objective_fix_psi()
       )
 
+      println("Constructed DESC constraints")
+
       optimizer = DESC.jl_create_optimizer("lsq-exact")
+
+      println("Defined optimizer")
+
+      println("Beginning equilibrium optimization")
       eq_new, out = DESC.jl_optimize_equilibrium(
         last(eq_fam); 
         objective=objective, 
         constraints=constraints, 
         optimizer=optimizer, 
-        maxiter=50, 
+        maxiter=1, 
         verbose=3, 
         copy=true, 
         options = Dict(
@@ -138,10 +149,8 @@ end
 
       push!(eq_fam, eq_new)
       
-    
+  # end 
 
-  end 
-
-
+  # DESC.jl_save_equilibrium_family(eq_fam, "qas_julia_test_results.hdf5")
 
 end 

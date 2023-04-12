@@ -12,10 +12,25 @@ function jl_objective_fix_boundary_r(;
     name="lcfs R"
 )
 
+    # if typeof(modes) != Bool
+    #     println(typeof(modes))
+    #     modes = PyCall.PyReverseDims(modes)
+    # end 
+
     py"""
     import numpy as np
     import desc
     from desc.objectives.linear_objectives import *
+    
+    # if not isinstance($modes, bool):
+        
+    #     print("Modes code")
+    #     print(type($modes))
+    #     print($modes.dtype)
+    #     print($modes.shape)
+    #     print("Originally Contiguous:", $modes.flags['C_CONTIGUOUS'])
+    #     print("Now: ", np.ascontiguousarray($modes).flags['C_CONTIGUOUS'])
+    #     new_modes = np.ascontiguousarray($modes)
     def create_objective_fix_boundary_r():
         return FixBoundaryR(
             eq=$eq,

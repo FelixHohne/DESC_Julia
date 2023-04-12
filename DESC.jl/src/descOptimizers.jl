@@ -73,6 +73,9 @@ function jl_optimize(
     options = Dict())
 
     py"""
+    from desc import set_device
+    set_device('gpu')
+    from desc.equilibrium import Equilibrium
     def execute_optimize_command():
         $optimizer.optimize(
             $equilibrium, 
@@ -89,3 +92,48 @@ function jl_optimize(
     """
     optimize_result = py"execute_optimize_command"()
 end 
+
+
+function jl_optimize_equilibrium(
+    eq; 
+    objective=nothing,
+    constraints= nothing,
+    optimizer="proximal-lsq-exact",
+    ftol= nothing,
+    xtol= nothing,
+    gtol= nothing,
+    maxiter=50,
+    x_scale="auto",
+    options=Dict(),
+    verbose=1,
+    copy=false
+)
+
+    py"""
+    import numpy as np
+    import desc
+    from desc import set_device
+    set_device('gpu')
+    print("Set device")
+    import desc.equilibrium
+    print("Imported desc eq")
+
+    def optimize():
+        return $eq.optimize(
+            objective=$objective,
+            constraints=$constraints,
+            optimizer=$optimizer,
+            ftol=$ftol,
+            xtol=$xtol,
+            gtol=$gtol,
+            maxiter=$maxiter,
+            x_scale=$x_scale,
+            options=$options,
+            verbose=$verbose,
+            copy=$copy
+        )
+    """
+    result = py"optimize"()
+
+
+end
