@@ -132,6 +132,15 @@ function jl_load_equilibrium(load_from, file_format)
 end 
 
 
+function jl_equilibrium_family_append(eq_fam, eq) 
+    py"""
+    import numpy as np
+    import desc
+    def append():
+        $eq_fam.append($eq) 
+    """
+    py"append"()
+end 
 
 function jl_save_equilibrium_family(eq_fam, file_name; file_format = "hdf5")
     py"""

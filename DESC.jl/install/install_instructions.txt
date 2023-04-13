@@ -27,3 +27,7 @@ using Pkg
 Pkg.activate(".")
 using DESC
 DESC.jl_load_equilibrium("test/QAS_output_continuation_automatic.hdf5", "hdf5")
+
+Add  modes = np.ascontiguousarray(modes) to linear objectives R and Z code. 
+This is because Julia uses column-major rather than row-major, 
+results in view problems. 

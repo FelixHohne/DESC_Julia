@@ -26,6 +26,10 @@ end
   """
   eq = DESC.jl_equilibrium()
   eq_fam = DESC.jl_equilibria_family(eq)
+
+  eq2 = DESC.jl_equilibrium()
+  DESC.jl_equilibrium_family_append(eq_fam, eq2)
+
 end 
 
 @testset "construct Linear Grid" begin 
@@ -33,7 +37,6 @@ end
   grid = DESC.jl_linear_grid(rho=[0.6, 0.8, 1.0], sym=true)
 
 end 
-
 
 @testset "extract R modes" begin 
     surf = DESC.jl_fourierRZToroidalSurface(
@@ -52,7 +55,6 @@ end
     )
 
 end 
-
 
 @testset "set eq for QAS_output.h5" begin 
   if FULL_RUN 
@@ -83,15 +85,13 @@ end
   end 
 end 
 
-
 @testset "QAS_output.h5" begin 
   eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
   println(eq)
   eq_fam = DESC.jl_equilibria_family(eq)
   grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
 
-    # for n in 1:eq.M
-    n = 1
+    for n in 1:eq.M
 
       print(n)
       println(" Optimizing boundary modes with M, N <= %d\n", n); 
@@ -100,7 +100,6 @@ end
         DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)), 
         verbose = 0
       )
-
 
       R_abs = abs.(eq.surface.R_basis.modes)
       max_Rabs = maximum(R_abs, dims=2)
@@ -114,7 +113,6 @@ end
       max_Zabs = maximum(Z_abs, dims=2)
       max_Zabs = dropdims(max_Zabs, dims = tuple(findall(size(max_Zabs) .== 1)...))
       Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Zabs), :]
-
 
       constraints = (
         DESC.jl_objective_force_balance(), 
@@ -136,7 +134,7 @@ end
         last(eq_fam); 
         objective=objective, 
         constraints=constraints, 
-        optimizer=optimizer, 
+        optimizer=optimiz, 
         maxiter=1, 
         verbose=3, 
         copy=true, 
@@ -146,11 +144,10 @@ end
           "solve_options" => Dict("verbose" => 0)
         )
       )
-
-      push!(eq_fam, eq_new)
+      DESC.jl_equilibrium_family_append(eq_fam, eq_new)
       
-  # end 
+  end 
 
-  # DESC.jl_save_equilibrium_family(eq_fam, "qas_julia_test_results.hdf5")
+  DESC.jl_save_equilibrium_family(eq_fam, "qas_julia_test_results.hdf5")
 
 end 
