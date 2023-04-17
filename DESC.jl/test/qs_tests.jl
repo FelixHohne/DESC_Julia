@@ -76,11 +76,11 @@ end
     """
     
     surf = DESC.jl_fourierRZToroidalSurface(
-      [1, 0.125, 0.1],
-      [-0.125, -0.1],
-      [[0, 0], [1, 0], [0, 1]],
-      [[-1, 0], [0, -1]],
-      4
+      R_lmn = [1, 0.125, 0.1],
+      Z_lmn = [-0.125, -0.1],
+      modes_R = [[0, 0], [1, 0], [0, 1]],
+      modes_Z = [[-1, 0], [0, -1]],
+      NFP = 4
     )
 
     eq = DESC.jl_equilibrium(
