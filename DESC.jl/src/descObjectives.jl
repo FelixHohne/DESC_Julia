@@ -29,32 +29,6 @@ function jl_objective_aspect_ratio(;
     output = py"create_objective_aspect_ratio"()
 end 
 
-
-function jl_objective_quasisymmetry_two_term(;
-    eq = nothing, 
-    target=0,  
-    bounds = nothing, 
-    weight=1, 
-    normalize=true, 
-    normalize_target=true, 
-    grid = nothing, 
-    helicity = (1, 0), 
-    name="QS two-term"
-)
-
-    py"""
-    import numpy as np
-    import desc
-    import desc.objectives
-    def create_objective_quasisymmetry_two_term():
-        return desc.objectives.QuasisymmetryTwoTerm(
-            eq=$eq, target=$target, bounds=$bounds, weight=$weight, 
-            normalize=$normalize, normalize_target=$normalize_target, 
-            grid=$grid, helicity=$helicity, name=$name)
-    """
-    output = py"create_objective_quasisymmetry_two_term"()
-end 
-
 function jl_objective_bootstrapRedlConsistency(
     eq = nothing, 
     target = 0, 
@@ -232,6 +206,35 @@ function jl_objective_helical_force_balance(;
     output = py"create_helical_force_objective"()
 end 
 
+function jl_objective_isodynamicity(;
+    eq = nothing,  
+    target = 0, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = false, 
+    normalize_target = false, 
+    grid = nothing, 
+    name = "Isodynamicity"
+)
+    py"""
+    import numpy as np
+    import desc
+    def create_isodynamicity_objective():
+        return desc.objectives.Isodynamicity(
+            eq=$eq,
+            target=$target,
+            bounds=$bounds,
+            weight=$weight,
+            normalize=$normalize,
+            normalize_target=$normalize_target,
+            name=$name,
+        )
+    """
+    output = py"create_isodynamicity_objective"()
+end 
+
+
+
 
 function jl_objective_magnetic_well(;
     eq = nothing,  
@@ -249,7 +252,7 @@ function jl_objective_magnetic_well(;
     # TODO: Grid
     def create_magnetic_well_objective():
         # Not supporting grid
-        return desc.objectives.MagneticWelle(
+        return desc.objectives.MagneticWell(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
             grid=$grid, name=$name)
@@ -306,30 +309,25 @@ function jl_objective_mercier_stability(;
     output = py"create_mercier_stability_objective"()
 end 
 
-function jl_objective_radial_force_balance(;
-    eq = nothing,  
-    target = 0, 
-    bounds = nothing, 
-    weight = 1, 
-    normalize = true, 
-    normalize_target = true, 
-    grid = nothing, 
-    name = "radial force"
-)
+function jl_objective_function(
+    objectives;
+    eq=nothing, 
+    use_jit=true, 
+    deriv_mode="batched", 
+    verbose=1)
     py"""
-    import numpy as np
-    import desc
-    # TODO: Grid
-    def create_radial_force_balance_objective():
-        # Not supporting grid
-        return desc.objectives.RadialForceBalance(
-            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
-            normalize=$normalize, normalize_target=$normalize_target, 
-            grid=$grid, name=$name)
+    def create_obj_function():
+        return desc.objectives.ObjectiveFunction(
+            objectives=$objectives,
+            eq=$eq, 
+            use_jit=$use_jit, 
+            deriv_mode=$deriv_mode, 
+            verbose=$verbose
+    )
     """
-    output = py"create_radial_force_balance_objective"()
-end 
+    output = py"create_obj_function"()
 
+end 
 
 function jl_objective_plasma_vessel_distance(;
     eq = nothing,  
@@ -354,6 +352,10 @@ function jl_objective_plasma_vessel_distance(;
     """
     output = py"create_plasma_vessel_distance_objective"()
 end 
+
+
+
+
 
 
 function jl_objective_principal_curvature(;
@@ -408,6 +410,30 @@ function jl_objective_quasisymmetry_boozer(;
     output = py"create_quasisymmetry_boozer_objective"()
 end 
 
+function jl_objective_quasisymmetry_two_term(;
+    eq = nothing, 
+    target=0,  
+    bounds = nothing, 
+    weight=1, 
+    normalize=true, 
+    normalize_target=true, 
+    grid = nothing, 
+    helicity = (1, 0), 
+    name="QS two-term"
+)
+
+    py"""
+    import numpy as np
+    import desc
+    import desc.objectives
+    def create_objective_quasisymmetry_two_term():
+        return desc.objectives.QuasisymmetryTwoTerm(
+            eq=$eq, target=$target, bounds=$bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, helicity=$helicity, name=$name)
+    """
+    output = py"create_objective_quasisymmetry_two_term"()
+end 
 
 
 function jl_objective_quasisymmetry_triple_product(;
@@ -434,6 +460,30 @@ function jl_objective_quasisymmetry_triple_product(;
     output = py"create_quasisymmetry_triple_product_objective"()
 end 
 
+
+function jl_objective_radial_force_balance(;
+    eq = nothing,  
+    target = 0, 
+    bounds = nothing, 
+    weight = 1, 
+    normalize = true, 
+    normalize_target = true, 
+    grid = nothing, 
+    name = "radial force"
+)
+    py"""
+    import numpy as np
+    import desc
+    # TODO: Grid
+    def create_radial_force_balance_objective():
+        # Not supporting grid
+        return desc.objectives.RadialForceBalance(
+            eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
+            normalize=$normalize, normalize_target=$normalize_target, 
+            grid=$grid, name=$name)
+    """
+    output = py"create_radial_force_balance_objective"()
+end 
 
 
 
