@@ -1,6 +1,6 @@
 using PyCall 
 
-function jl_profiles_spline_profile(;
+function jl_profiles_power_series_profile(;
     params = [0], 
     modes = nothing, 
     grid = nothing, 

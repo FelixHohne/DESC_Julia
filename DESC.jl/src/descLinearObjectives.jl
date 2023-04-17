@@ -257,3 +257,38 @@ end
 
 
 
+function jl_objective_fix_iota(;
+    eq=nothing,
+    target=nothing,
+    bounds=nothing,
+    weight=1,
+    normalize=false,
+    normalize_target=false,
+    profile=nothing, 
+    indices=true,
+    name="fixed-iota",
+)
+    py"""
+    import numpy as np
+    import desc
+    from desc.objectives.linear_objectives import *
+    def create_objective_fix_iota():
+        return FixIota(
+            eq=$eq,
+            target=$target,
+            bounds=$bounds,
+            weight=$weight,
+            normalize=$normalize,
+            normalize_target=$normalize_target,
+            profile=$profile, 
+            indices=$indices,
+            name=$name,
+        )
+    """
+    output = py"create_objective_fix_iota"()
+end 
+
+
+
+
+

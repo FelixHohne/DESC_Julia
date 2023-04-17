@@ -309,6 +309,8 @@ function jl_objective_mercier_stability(;
     output = py"create_mercier_stability_objective"()
 end 
 
+
+# The objectives field is required, so do not pass in as keyword argument. 
 function jl_objective_function(
     objectives;
     eq=nothing, 
