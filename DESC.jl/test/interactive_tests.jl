@@ -37,7 +37,6 @@
 
     objectives = DESC.jl_objective_force_balance()
     obj = DESC.jl_objective_function(objectives)
-    constraints2 = jl_get_fixed_boundary_constraints()
-
+    constraints2 = DESC.jl_get_fixed_boundary_constraints()
 
 end 

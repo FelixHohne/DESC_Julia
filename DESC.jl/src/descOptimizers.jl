@@ -54,8 +54,6 @@ function jl_optimize(
     options = Dict())
 
     py"""
-    from desc import set_device
-    set_device('gpu')
     from desc.equilibrium import Equilibrium
     def execute_optimize_command():
         $optimizer.optimize(
@@ -93,11 +91,8 @@ function jl_optimize_equilibrium(
     py"""
     import numpy as np
     import desc
-    from desc import set_device
-    set_device('gpu')
-    print("Set device")
+   
     import desc.equilibrium
-    print("Imported desc eq")
 
     def optimize():
         return $eq.optimize(

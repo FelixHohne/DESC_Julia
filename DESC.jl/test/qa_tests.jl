@@ -3,8 +3,7 @@
     py"""
     import numpy as np
     import desc
-    from desc import set_device
-    set_device('gpu')
+   
     """
     
     surf = DESC.jl_fourierRZToroidalSurface(

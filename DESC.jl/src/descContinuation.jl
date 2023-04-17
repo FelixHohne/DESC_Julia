@@ -14,9 +14,6 @@ function jl_solve_continuation(
     import numpy as np
     import desc
     import desc.continuation 
-
-    from desc import set_device
-    set_device('gpu')
     
     def create_solve_continuation():
         return desc.continuation.solve_continuation(
@@ -57,9 +54,6 @@ function jl_solve_continuation_automatic(
     import numpy as np
     import desc
     import desc.continuation 
-
-    from desc import set_device
-    set_device('gpu')
     
 
     def create_solve_continuation_automatic():
