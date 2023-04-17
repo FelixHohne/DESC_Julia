@@ -29,4 +29,6 @@ include("descObjectives.jl")
 include("descContinuation.jl")
 include("descLinearObjectives.jl")
 include("descUtils.jl")
+include("descBasis.jl")
+include("descProfiles.jl")
 end
