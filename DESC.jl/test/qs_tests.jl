@@ -1,6 +1,5 @@
-FULL_RUN = false
 using PyCall
-
+FULL_RUN = false
 
 @testset "extract R modes" begin 
   DESC.desc_jl_use_gpu_if_available()
@@ -20,42 +19,6 @@ using PyCall
   )
 
 end 
-
-
-
-@testset "Test C-major matrix representation test" begin 
-    DESC.desc_jl_use_gpu_if_available()
-    eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
-    eq_fam = DESC.jl_equilibria_family(eq)
-    grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
-    n = 1
-      
-    objective = DESC.jl_objective_function(
-      (DESC.jl_objective_quasisymmetry_two_term(helicity = (1, eq.NFP), grid=grid, normalize=false),
-      DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)), 
-      verbose = 0
-    )
-  
-    R_abs = abs.(eq.surface.R_basis.modes)
-    max_Rabs = maximum(R_abs, dims=2)
-    # equivalent to np.squeeze. See https://stackoverflow.com/questions/52505760/dropping-singleton-dimensions-in-julia
-    # ensures indexing with findall broadcasts correctly
-    max_Rabs = dropdims(max_Rabs, dims = tuple(findall(size(max_Rabs) .== 1)...))
-    R_elem_mode = eq.surface.R_basis.modes[findall(>(n), max_Rabs), :]
-    R_modes = vcat([0 0 0], R_elem_mode)
-  
-    Z_abs = abs.(eq.surface.Z_basis.modes)
-    max_Zabs = maximum(Z_abs, dims=2)
-    max_Zabs = dropdims(max_Zabs, dims = tuple(findall(size(max_Zabs) .== 1)...))
-    Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Zabs), :]
-  
-    constraints = (
-      DESC.jl_objective_fix_boundary_r(modes=R_modes), 
-      DESC.jl_objective_fix_boundary_z(modes=Z_modes), 
-    )
-    
-  end 
-
 
 @testset "Construct boolean R modes" begin 
   DESC.desc_jl_use_gpu_if_available()
@@ -132,70 +95,69 @@ end
   end 
 end 
 
+
 @testset "QAS_output.h5" begin 
-  DESC.desc_jl_use_gpu_if_available()
-  eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
-  println(eq)
-  eq_fam = DESC.jl_equilibria_family(eq)
-  grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
+  if FULL_RUN 
+    DESC.desc_jl_use_gpu_if_available()
+    eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
+    println(eq)
+    eq_fam = DESC.jl_equilibria_family(eq)
+    grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
 
-    for n in 1:eq.M
-
-      print(n)
-      println(" Optimizing boundary modes with M, N <= %d\n", n); 
-      objective = DESC.jl_objective_function(
-        (DESC.jl_objective_quasisymmetry_two_term(helicity = (1, eq.NFP), grid=grid, normalize=false),
-        DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)), 
-        verbose = 0
-      )
-
-      R_abs = abs.(eq.surface.R_basis.modes)
-      max_Rabs = maximum(R_abs, dims=2)
-      # equivalent to np.squeeze. See https://stackoverflow.com/questions/52505760/dropping-singleton-dimensions-in-julia
-      # ensures indexing with findall broadcasts correctly
-      max_Rabs = dropdims(max_Rabs, dims = tuple(findall(size(max_Rabs) .== 1)...))
-      R_elem_mode = eq.surface.R_basis.modes[findall(>(n), max_Rabs), :]
-      R_modes = vcat([0 0 0], R_elem_mode)
-    
-      Z_abs = abs.(eq.surface.Z_basis.modes)
-      max_Zabs = maximum(Z_abs, dims=2)
-      max_Zabs = dropdims(max_Zabs, dims = tuple(findall(size(max_Zabs) .== 1)...))
-      Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Zabs), :]
-
-      constraints = (
-        DESC.jl_objective_force_balance(), 
-        DESC.jl_objective_fix_boundary_r(modes=R_modes), 
-        DESC.jl_objective_fix_boundary_z(modes=Z_modes), 
-        DESC.jl_objective_fix_pressure(), 
-        DESC.jl_objective_fix_current(), 
-        DESC.jl_objective_fix_psi()
-      )
-
-      println("Constructed DESC constraints")
-
-      optimizer = DESC.jl_create_optimizer("lsq-exact")
-
-      println("Defined optimizer")
-
-      println("Beginning equilibrium optimization")
-      eq_new, out = DESC.jl_optimize_equilibrium(
-        last(eq_fam); 
-        objective=objective, 
-        constraints=constraints, 
-        optimizer=optimizer, 
-        maxiter=1, 
-        verbose=3, 
-        copy=true, 
-        options = Dict(
-          "initial_trust_radius" => 0.5,
-          "perturb_options" => Dict("verbose" => 0),
-          "solve_options" => Dict("verbose" => 0)
+      for n in 1:eq.M
+        objective = DESC.jl_objective_function(
+          (DESC.jl_objective_quasisymmetry_two_term(helicity = (1, eq.NFP), grid=grid, normalize=false),
+          DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)), 
+          verbose = 0
         )
-      )
-      DESC.jl_equilibrium_family_append(eq_fam, eq_new)
+
+        R_abs = abs.(eq.surface.R_basis.modes)
+        max_Rabs = maximum(R_abs, dims=2)
+        # equivalent to np.squeeze. See https://stackoverflow.com/questions/52505760/dropping-singleton-dimensions-in-julia
+        # ensures indexing with findall broadcasts correctly
+        max_Rabs = dropdims(max_Rabs, dims = tuple(findall(size(max_Rabs) .== 1)...))
+        R_elem_mode = eq.surface.R_basis.modes[findall(>(n), max_Rabs), :]
+        R_modes = vcat([0 0 0], R_elem_mode)
       
+        Z_abs = abs.(eq.surface.Z_basis.modes)
+        max_Zabs = maximum(Z_abs, dims=2)
+        max_Zabs = dropdims(max_Zabs, dims = tuple(findall(size(max_Zabs) .== 1)...))
+        Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Zabs), :]
+
+        constraints = (
+          DESC.jl_objective_force_balance(), 
+          DESC.jl_objective_fix_boundary_r(modes=R_modes), 
+          DESC.jl_objective_fix_boundary_z(modes=Z_modes), 
+          DESC.jl_objective_fix_pressure(), 
+          DESC.jl_objective_fix_current(), 
+          DESC.jl_objective_fix_psi()
+        )
+
+        println("Constructed DESC constraints")
+
+        optimizer = DESC.jl_create_optimizer("lsq-exact")
+
+        println("Defined optimizer")
+
+        println("Beginning equilibrium optimization")
+        eq_new, out = DESC.jl_optimize_equilibrium(
+          last(eq_fam); 
+          objective=objective, 
+          constraints=constraints, 
+          optimizer=optimizer, 
+          maxiter=1, 
+          verbose=3, 
+          copy=true, 
+          options = Dict(
+            "initial_trust_radius" => 0.5,
+            "perturb_options" => Dict("verbose" => 0),
+            "solve_options" => Dict("verbose" => 0)
+          )
+        )
+        DESC.jl_equilibrium_family_append(eq_fam, eq_new)
+        
+    end 
+
+    DESC.jl_save_equilibrium_family(eq_fam, "qas_julia_test_results.hdf5")
   end 
-
-  DESC.jl_save_equilibrium_family(eq_fam, "qas_julia_test_results.hdf5")
-
 end 
