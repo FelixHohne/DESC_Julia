@@ -1,7 +1,7 @@
 using PyCall 
 
 
-function jl_fourierRZCurve(
+function jl_fourierRZCurve(;
     R_n = 10, 
     Z_n = 0, 
     modes_R = nothing, 
@@ -33,7 +33,7 @@ function jl_fourierRZCurve(
     output = py"create_fourier_rz_curve"()
 end 
 
-function jl_fourierRZToroidalSurface(
+function jl_fourierRZToroidalSurface(;
     R_lmn = nothing, 
     Z_lmn = nothing, 
     modes_R = nothing, 

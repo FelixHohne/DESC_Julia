@@ -22,15 +22,22 @@ function jl_objective_fix_boundary_r(;
     import desc
     from desc.objectives.linear_objectives import *
     
-    # if not isinstance($modes, bool):
+    if not isinstance($modes, bool):
         
-    #     print("Modes code")
-    #     print(type($modes))
-    #     print($modes.dtype)
-    #     print($modes.shape)
-    #     print("Originally Contiguous:", $modes.flags['C_CONTIGUOUS'])
-    #     print("Now: ", np.ascontiguousarray($modes).flags['C_CONTIGUOUS'])
-    #     new_modes = np.ascontiguousarray($modes)
+        python_modes = $modes 
+        print("Python modes originally Contiguous:", python_modes.flags['C_CONTIGUOUS'])
+        python_modes = np.ascontiguousarray(python_modes)
+        print("Python modes now Contiguous:", python_modes.flags['C_CONTIGUOUS'])
+
+        # print("Modes code")
+        # print(type($modes))
+        # print($modes.dtype)
+        # print($modes.shape)
+        # print("Originally Contiguous:", $modes.flags['C_CONTIGUOUS'])
+        # print("Now: ", np.ascontiguousarray($modes).flags['C_CONTIGUOUS'])
+        # new_modes = np.ascontiguousarray($modes)
+    else:
+        python_modes = $modes
     def create_objective_fix_boundary_r():
         return FixBoundaryR(
             eq=$eq,
@@ -39,7 +46,7 @@ function jl_objective_fix_boundary_r(;
             weight=$weight,
             normalize=$normalize,
             normalize_target=$normalize_target,
-            modes=$modes,
+            modes=python_modes,
             surface_label=$surface_label,
             name=$name
         )
@@ -64,11 +71,22 @@ function jl_objective_fix_boundary_z(;
     import numpy as np
     import desc
     from desc.objectives.linear_objectives import *
+
+    if not isinstance($modes, bool):
+        
+        python_modes = $modes 
+        print("Python modes originally Contiguous:", python_modes.flags['C_CONTIGUOUS'])
+        python_modes = np.ascontiguousarray(python_modes)
+        print("Python modes now Contiguous:", python_modes.flags['C_CONTIGUOUS'])
+
+    else:
+        python_modes = $modes
+
     def create_objective_fix_boundary_z():
         return FixBoundaryZ(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
-            modes = $modes, 
+            modes = python_modes, 
             surface_label = $surface_label, 
             name=$name)
     """
