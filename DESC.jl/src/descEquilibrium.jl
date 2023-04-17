@@ -144,3 +144,38 @@ function jl_save_equilibrium_family(eq_fam, file_name; file_format = "hdf5")
     """
     py"save_eq_fam"()
 end 
+
+function jl_solve_equilibrium(
+    eq;
+    objective = "force", 
+    constraints = nothing, 
+    optimizer = "lsq-exact", 
+    ftol = nothing, 
+    xtol = nothing,
+    gtol = nothing, 
+    maxiter = 50, 
+    x_scale = "auto", 
+    options = nothing, 
+    verbose = 1, 
+    copy = false
+)
+    py"""
+    import numpy as np
+    import desc
+    def eq_solve():
+        return $eq.solve(
+            objective = $objective, 
+            constraints = $constraints, 
+            optimizer = $optimizer, 
+            ftol = $ftol, 
+            xtol = $xtol,
+            gtol = $gtol, 
+            maxiter = $maxiter, 
+            x_scale = $x_scale, 
+            options = $options, 
+            verbose = $verbose, 
+            copy = $copy 
+        ) 
+    """
+    result = py"eq_solve"()
+end

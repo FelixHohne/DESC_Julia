@@ -39,4 +39,15 @@
     obj = DESC.jl_objective_function(objectives)
     constraints2 = DESC.jl_get_fixed_boundary_constraints()
 
+    DESC.jl_solve_equilibrium(
+        eq,
+        verbose=3, 
+        ftol=1e-8, 
+        maxiter=50, 
+        constraints=constraints, 
+        optimizer=optimizer, 
+        objective=obj
+    )
+
+
 end 
