@@ -2,7 +2,7 @@ from desc import set_device
 import time
 
 import numpy as np
-
+set_device("gpu")
 start = time.time()
 from desc.continuation import solve_continuation_automatic
 from desc.equilibrium import EquilibriaFamily, Equilibrium
@@ -33,5 +33,5 @@ eq = Equilibrium(M=8, N=8, Psi=0.04, surface=surf)
 eq = solve_continuation_automatic(eq, objective="force", bdry_step=0.5, verbose=3)
 end = time.time()
 
-print("time: ", start - end)
+print("time: ", end - start)
 
