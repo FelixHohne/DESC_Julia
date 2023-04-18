@@ -4,7 +4,7 @@ using DESC
 
 function solve_eq_timing()
 
-    DESC.desc_jl_use_gpu_if_available()
+    # DESC.desc_jl_use_gpu_if_available()
     surface = DESC.jl_fourierRZToroidalSurface(
         R_lmn=[10, 1],
         modes_R=[[0, 0], [1, 0]],  # modes given as [m,n] for each coefficient
@@ -75,10 +75,8 @@ function solve_continuation_automatic_timing()
     DESC.jl_solve_continuation_automatic(eq, objective = "force", verbose=3, bdry_step=0.5)
 end 
 
-function solve_full_set()
-
 function solve_full_optimization() 
-    DESC.desc_jl_use_gpu_if_available()
+    # DESC.desc_jl_use_gpu_if_available()
     surf = DESC.jl_fourierRZToroidalSurface(
     R_lmn = [1, 0.125, 0.1],
     Z_lmn = [-0.125, -0.1],
@@ -97,7 +95,6 @@ function solve_full_optimization()
     eq = last(DESC.jl_solve_continuation_automatic(eq, objective = "force", verbose=3, bdry_step=0.5))
     DESC.jl_save_equilibrium(eq, "QAS_output_continuation_automatic.hdf5")
   
-    DESC.desc_jl_use_gpu_if_available()
     eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
     println(eq)
     eq_fam = DESC.jl_equilibria_family(eq)
@@ -159,14 +156,13 @@ function solve_full_optimization()
   
       DESC.jl_save_equilibrium_family(eq_fam, "qas_julia_test_results.hdf5")
     end 
-  end 
   
 
-println("Interactive example timing")
-@time solve_eq_timing()
+# println("Interactive example timing")
+# @time solve_eq_timing()
 
 # println("Solve continuation automatic timing")
 # @time solve_continuation_automatic_timing()
 
-# println("Solve full set")
-# @time solve_full_optimization()
+println("Solve full set")
+@time solve_full_optimization()

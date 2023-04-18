@@ -1,12 +1,14 @@
 import time 
 start = time.time()
 import numpy as np
-from desc.equilibrium import Equilibrium
+from desc import set_device
+set_device('gpu')
+
 from desc.geometry import FourierRZToroidalSurface
 from desc.profiles import PowerSeriesProfile
 from desc.plotting import plot_1d, plot_section, plot_surfaces
-
-
+from desc import set_device
+from desc.equilibrium import Equilibrium
 surface = FourierRZToroidalSurface(
     R_lmn=[10, 1],
     modes_R=[[0, 0], [1, 0]],  # modes given as [m,n] for each coefficient

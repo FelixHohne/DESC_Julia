@@ -2,7 +2,10 @@ using Pkg
 Pkg.activate(".") 
 using DESC 
 
-function code_to_time()
+function code_to_time(use_gpu)
+    if use_gpu
+        DESC.desc_jl_use_gpu_if_available()
+    end 
     surf = DESC.jl_fourierRZToroidalSurface(
         R_lmn = [1, 0.125, 0.1],
         Z_lmn = [-0.125, -0.1],
@@ -22,4 +25,4 @@ function code_to_time()
 end 
 
 
-@time code_to_time()
+@time code_to_time(false)
