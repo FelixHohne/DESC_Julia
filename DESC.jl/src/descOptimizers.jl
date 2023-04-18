@@ -92,8 +92,6 @@ function jl_optimize_equilibrium(
     import numpy as np
     import desc
    
-    import desc.equilibrium
-
     def optimize():
         return $eq.optimize(
             objective=$objective,
@@ -110,6 +108,88 @@ function jl_optimize_equilibrium(
         )
     """
     result = py"optimize"()
-
-
 end
+
+function jl_optimize_fmintr(
+    fun, 
+    x0, 
+    grad;
+    hess = "bfs", 
+    args = (), 
+    method = "dogleg", 
+    x_scale = 1, 
+    ftol = 1e-6, 
+    xtol = 1e-6, 
+    gtol = 1e-6, 
+    verbose = 1, 
+    maxiter = nothing, 
+    callback = nothing, 
+    options = Dict()
+)
+
+py"""
+import numpy as np
+import desc
+
+def fmintr():
+    return desc.optimize.fmintr(
+        fun = $fun, 
+        x0 = $x0, 
+        grad = $grad, 
+        hess = $hess, 
+        args = $args, 
+        method = $method, 
+        x_scale = $x_scale, 
+        ftol = $ftol, 
+        xtol = $xtol, 
+        gtol = $gtol, 
+        verbose = $verbose, 
+        maxiter = $maxiter, 
+        callback = $callback, 
+        options = $options 
+    )
+"""
+result = py"fmintr"()
+
+end 
+
+function jl_optimize_lsqtr(
+    fun, 
+    x0, 
+    jac; 
+    args = (), 
+    x_scale = 1, 
+    ftol = 1e-6, 
+    xtol = 1e-6, 
+    gtol = 1e-6, 
+    verbose = 1, 
+    maxiter = nothing, 
+    tr_method = "svd", 
+    callback = nothing, 
+    options = Dict()
+)
+
+py"""
+import numpy as np
+import desc
+
+def lsqtr():
+    return desc.optimize.lsqtr(
+        fun = $fun, 
+        x0 = $x0, 
+        jac = $jac; 
+        args = $args, 
+        x_scale = $x_scale, 
+        ftol = $ftol, 
+        xtol = $xtol, 
+        gtol = $gtol, 
+        verbose = $verbose, 
+        maxiter = $maxiter, 
+        tr_method = $tr_method, 
+        callback = $callback, 
+        options = $options
+    )
+"""
+result = py"lsqtr"()
+
+end 

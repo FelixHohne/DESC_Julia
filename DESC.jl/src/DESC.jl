@@ -31,4 +31,7 @@ include("descLinearObjectives.jl")
 include("descUtils.jl")
 include("descBasis.jl")
 include("descProfiles.jl")
+include("descPlot.jl")
+include("descPerturbations.jl")
+
 end
