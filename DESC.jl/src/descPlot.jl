@@ -1,5 +1,206 @@
 using PyCall 
 
+function jl_plotting_plot_1d(
+    eq, 
+    name, 
+    grid = nothing, 
+    log = false, 
+    ax = nothing,  
+    return_data = false, 
+    kwargs...
+)
+    kwargs_dict = Dict(pairs(kwargs))
+
+    py"""
+    import desc 
+    import desc.plotting
+    import numpy as np  
+
+    def plot():
+        return desc.plotting.plot_1d(
+            $eq, 
+            $name, 
+            grid = $grid, 
+            log = $log, 
+            ax = $ax,  
+            return_data = $return_data, 
+            **$kwargs_dict
+            )
+    """
+    output = py"plot"()
+    plt = pyimport("matplotlib.pyplot")
+    plt.show()
+end 
+
+
+function jl_plotting_plot_2d(
+    eq, 
+    name, 
+    grid = nothing, 
+    log = false, 
+    norm_F = false,
+    ax = nothing,  
+    return_data = false, 
+    kwargs...
+)
+    kwargs_dict = Dict(pairs(kwargs))
+
+    py"""
+    import desc 
+    import desc.plotting
+    import numpy as np  
+
+    def plot():
+        return desc.plotting.plot_2d(
+            $eq, 
+            $name, 
+            grid = $grid, 
+            log = $log, 
+            norm_F = $norm_F,
+            ax = $ax,  
+            return_data = $return_data,  
+            **$kwargs_dict
+            )
+    """
+    output = py"plot"()
+    plt = pyimport("matplotlib.pyplot")
+    plt.show()
+end 
+
+function jl_plotting_plot_3d(
+    eq, 
+    name, 
+    grid = nothing, 
+    log = false, 
+    all_field_periods = true, 
+    ax = nothing, 
+    return_data = false, 
+    kwargs...
+)
+    kwargs_dict = Dict(pairs(kwargs))
+
+    py"""
+    import desc 
+    import desc.plotting
+    import numpy as np  
+
+    def plot():
+        return desc.plotting.plot_3d(
+            $eq, 
+            $name, 
+            grid = $grid, 
+            log = $log, 
+            all_field_periods = $all_field_periods, 
+            ax = $ax, 
+            return_data = $return_data, 
+            **$kwargs_dict
+            )
+    """
+    output = py"plot"()
+    plt = pyimport("matplotlib.pyplot")
+    plt.show()
+end 
+
+
+function jl_plotting_plot_basis(
+    basis; 
+    return_data = false, 
+    kwargs...
+)
+    kwargs_dict = Dict(pairs(kwargs))
+
+    py"""
+    import desc 
+    import desc.plotting
+    import numpy as np  
+
+    def plot():
+        return desc.plotting.plot_basis(
+            $basis; 
+            return_data = $return_data, 
+            **$kwargs_dict
+            )
+    """
+    output = py"plot"()
+    plt = pyimport("matplotlib.pyplot")
+    plt.show()
+end 
+
+
+
+function jl_plotting_plot_boozer_modes(
+    eq; 
+    log = true, 
+    B0 = true, 
+    norm = false, 
+    num_modes = 10, 
+    rho = nothing, 
+    ax = nothing, 
+    return_data = false, 
+    kwargs...
+)
+    kwargs_dict = Dict(pairs(kwargs))
+
+    py"""
+    import desc 
+    import desc.plotting
+    import numpy as np  
+
+    def plot():
+        return desc.plotting.plot_boozer_modes(
+            $eq, 
+            log = $log, 
+            B0 = $B0, 
+            norm = $norm, 
+            num_modes = $num_nodes, 
+            rho = $rho, 
+            ax = $ax, 
+            return_data = $return_data, 
+            **$kwargs_dict
+            )
+    """
+    output = py"plot"()
+    plt = pyimport("matplotlib.pyplot")
+    plt.show()
+end 
+
+
+
+function jl_plotting_plot_boozer_surface(
+    eqs; 
+    grid_compute = nothing, 
+    grid_plot = nothing, 
+    fill = false, 
+    ncontours = 100, 
+    ax = nothing, 
+    return_data = false, 
+    kwargs...
+)
+    kwargs_dict = Dict(pairs(kwargs))
+
+    py"""
+    import desc 
+    import desc.plotting
+    import numpy as np  
+
+    def plot():
+        return desc.plotting.plot_boozer_surface(
+            $eqs, 
+            grid_compute = $grid_compute, 
+            grid_plot = $grid_plot, 
+            fill = $fill, 
+            ncontours = $ncontours, 
+            ax = $ax, 
+            return_data = $return_data,  
+            **$kwargs_dict
+            )
+    """
+    output = py"plot"()
+    plt = pyimport("matplotlib.pyplot")
+    plt.show()
+end 
+
+
 function jl_plotting_plot_boundaries(
     eqs; 
     labels = nothing, 
