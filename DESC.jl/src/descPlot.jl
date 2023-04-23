@@ -537,10 +537,10 @@ end
 
 function jl_plotting_plot_section(
     eq, 
-    name, 
+    name;
     grid = nothing, 
     log = false, 
-    norm_f = false, 
+    norm_F = false, 
     ax = nothing, 
     return_data = false, 
     kwargs...
@@ -558,7 +558,7 @@ function jl_plotting_plot_section(
             name=$name, 
             grid = $grid, 
             log = $log, 
-            norm_f = $norm_f, 
+            norm_F = $norm_F, 
             ax = $ax, 
             return_data = $return_data, 
             **$kwargs_dict
