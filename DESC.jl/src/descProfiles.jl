@@ -43,7 +43,7 @@ function jl_profiles_spline_profile(;
            values = $values, 
            knots = $knots, 
            grid=$grid, 
-           method = $cubic2, 
+           method = $method, 
            name = $name
         )
     """
