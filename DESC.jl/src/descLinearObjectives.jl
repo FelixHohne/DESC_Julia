@@ -25,7 +25,6 @@ function jl_objective_fix_boundary_r(;
     if not isinstance($modes, bool):
         
         python_modes = $modes 
-        print("Python modes originally Contiguous:", python_modes.flags['C_CONTIGUOUS'])
         python_modes = np.ascontiguousarray(python_modes)
         print("Python modes now Contiguous:", python_modes.flags['C_CONTIGUOUS'])
 

@@ -62,15 +62,50 @@ PLOTTING = false
     verbose=2, ftol=1e-8, objective=obj, optimizer=optimizer, constraints=constraints
   )
 
-  DESC.jl_plotting_plot_surfaces(
-    eq
+  if PLOTTING
+    DESC.jl_plotting_plot_surfaces(
+      eq
+    )
+
+    DESC.jl_plotting_plot_section(
+      eq, 
+      "|F|", 
+      norm_F=true, log=true
+    )
+    DESC.jl_plotting_plot_1d(eq, "p");
+  end 
+
+  delta_p = zeros(Int, size(eq.p_l))
+  p_values = 1000 * (1 .- eq.pressure._knots .^2)
+  delta_p = p_values 
+
+  eq1 = DESC.jl_perturb(
+    eq, 
+    Dict("p_l" => delta_p), 
+    order = 2
   )
 
-  DESC.jl_plotting_plot_section(
-    eq, 
-    "|F|", 
-    norm_F=true, log=true
+  # TODO: FIX
+  # @test isapprox(eq1.pressure.params, 1000 * (1 .- eq.pressure._knots .^ 2))
+
+  if PLOTTING 
+    DESC.jl_plotting_plot_section(eq1, "|F|", norm_F=true, log=true);
+  end 
+  
+  constraints = (
+    DESC.jl_objective_fix_boundary_r(), 
+    DESC.jl_objective_fix_boundary_z(), 
+    DESC.jl_objective_fix_pressure(), 
+    DESC.jl_objective_fix_iota(), 
+    DESC.jl_objective_fix_psi()
   )
+
+  objective = DESC.jl_objective_force_balance()
+  obj = DESC.jl_objective_function(objectives=objectives)
+  DESC.jl_solve_equilibrium(eq, verbose=2, ftol = 1e-4, optimizer=optimizer, constraints=constraints, objective=obj)
+  DESC.jl_plotting_plot_section(eq1, "|F|", norm_F=true, log=true)
+
+
  
 #   println("Pressure values at these knots:\n", pressure.params)
 #   println("Rotational Transform rho knots:\n", iota._knots)

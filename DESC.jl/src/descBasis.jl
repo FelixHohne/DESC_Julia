@@ -1,6 +1,6 @@
 using PyCall 
 
-function jl_basis_power_series(
+function PowerSeries(
     L;
     sym = "even", 
 ) 
@@ -11,14 +11,14 @@ function jl_basis_power_series(
 
     def create_power_series_basis():
         return desc.basis.PowerSeries(
-           L = $L, 
-           even = $even
+           $L, 
+           sym = $sym
         )
     """
     output = py"create_power_series_basis"()
 end 
 
-function jl_basis_fourier_series(
+function FourierSeries(
     N;
     NFP = 1, 
     sym = false
@@ -30,7 +30,7 @@ function jl_basis_fourier_series(
 
     def create_fourier_series_basis():
         return desc.basis.FourierSeries(
-            N = $N;
+            $N,
             NFP = $NFP, 
             sym = $sym
         )
@@ -38,7 +38,7 @@ function jl_basis_fourier_series(
     output = py"create_fourier_series_basis"()
 end 
 
-function jl_basis_double_fourier_series(
+function DoubleFourierSeries(
    M, 
    N; 
    NFP = 1, 
@@ -51,8 +51,8 @@ function jl_basis_double_fourier_series(
 
     def create_double_fourier_series_basis():
         return desc.basis.DoubleFourierSeries(
-            M = $M, 
-            N = $N, 
+            $M, 
+            $N, 
             NFP = $NFP, 
             sym = $sym
         )
@@ -60,7 +60,7 @@ function jl_basis_double_fourier_series(
     output = py"create_double_fourier_series_basis"()
 end 
 
-function jl_basis_zernike_polynomial(
+function ZernikePolynomial(
     L, 
     M;
     sym = false, 
@@ -73,8 +73,8 @@ function jl_basis_zernike_polynomial(
  
      def create_zernike_polynomial_basis():
          return desc.basis.ZernikePolynomial(
-             L = $L, 
-             M = $M, 
+             $L, 
+             $M, 
              sym = $sym, 
              spectral_indexing = $spectral_indexing
          )
@@ -82,7 +82,7 @@ function jl_basis_zernike_polynomial(
      output = py"create_zernike_polynomial_basis"()
  end 
  
- function jl_basis_fourier_zernike_polynomial(
+ function FourierZernikeBasis(
     L, 
     M,
     N; 
@@ -95,25 +95,96 @@ function jl_basis_zernike_polynomial(
      import desc.basis
      import numpy as np  
  
-     def create_fourier_zernike_polynomial_basis():
-         return desc.basis.FourierZernikePolynomial(
-             L = $L, 
-             M = $M,
-             N = $N,  
+     def create_basis():
+         return desc.basis.FourierZernikeBasis(
+             $L, 
+             $M,
+             $N,  
              sym = $sym, 
              spectral_indexing = $spectral_indexing
          )
      """
-     output = py"create_fourier_zernike_polynomial_basis"()
+     output = py"create_basis"()
  end 
  
-function change_basis(basis, N; NFP=nothing) 
+function basis_evaluate(
+    basis, 
+    nodes; 
+    derivatives = [0, 0, 0], 
+    modes = nothing, 
+    unique = false)
+    py"""
+    import desc 
+    import desc.basis
+    import numpy as np  
+    def ev():
+        if isinstance($nodes, np.ndarray):
+            new_nodes = np.ascontiguousarray($nodes)
+            assert new_nodes.flags['C_CONTIGUOUS']
+        else:
+            new_nodes = $nodes
+        
+        if isinstance($derivatives, np.ndarray):
+            new_derivatives = np.ascontiguousarray($derivatives)
+            assert new_derivatives.flags['C_CONTIGUOUS']
+        else:
+            new_derivatives = $derivatives
+        
+        if isinstance($modes, np.ndarray):
+            new_modes = np.ascontiguousarray($modes)
+            assert new_modes.flags['C_CONTIGUOUS']
+        else:
+            new_modes = $modes
 
+        $basis.evaluate(
+            new_nodes, 
+            derivatives=new_derivatives, 
+            modes = new_modes, 
+            unique = $unique
+        ) 
+    """
+    output = py"ev"()
+end
+
+function basis_get_idx(;
+    basis, 
+    L = 0, 
+    M = 0, 
+    N = 0, 
+    error = true
+)
     py"""
     import desc 
     import desc.basis 
-    def change_resolution():
-        basis.change_resolution(N = $N, NFP = $NFP) 
+    def compute():
+        $basis.get_idx(
+            L = $L, 
+            M = $L, 
+            N = $N, 
+            error = $error
+        ) 
     """
-    output = py"change_resolution"()
-end 
+    output = py"compute"()
+end
+
+
+function basis_load(
+   basis,
+   load_from; 
+   file_format = nothing
+)
+    py"""
+    import desc 
+    import desc.basis 
+    def load():
+        $basis.load(
+            $load_from, 
+            file_format = $file_format
+        ) 
+    """
+    output = py"load"()
+end
+
+
+
+

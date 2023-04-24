@@ -309,6 +309,26 @@ function jl_objective_mercier_stability(;
     output = py"create_mercier_stability_objective"()
 end 
 
+function jl_objective_function(;
+    objectives = nothing, 
+    eq=nothing, 
+    use_jit=true, 
+    deriv_mode="batched", 
+    verbose=1)
+    py"""
+    def create_obj_function():
+        return desc.objectives.ObjectiveFunction(
+            objectives=$objectives,
+            eq=$eq, 
+            use_jit=$use_jit, 
+            deriv_mode=$deriv_mode, 
+            verbose=$verbose
+    )
+    """
+    output = py"create_obj_function"()
+
+end 
+
 
 # The objectives field is required, so do not pass in as keyword argument. 
 function jl_objective_function(

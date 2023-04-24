@@ -179,3 +179,62 @@ function jl_solve_equilibrium(
     """
     result = py"eq_solve"()
 end
+
+
+function jl_change_resolution(
+    eq;
+    L = nothing, 
+    M = nothing, 
+    N = nothing, 
+    L_grid = nothing, 
+    M_grid = nothing, 
+    N_grid = nothing, 
+    NFP = nothing
+)
+    py"""
+    import numpy as np
+    import desc
+    def func_call():
+        return $eq.change_resolution(
+            L = $L, 
+            M = $M, 
+            N = $N, 
+            L_grid = $L_grid, 
+            M_grid = $M_grid, 
+            N_grid = $N_grid, 
+            NFP = $NFP
+        ) 
+    """
+    result = py"func_call"()
+end
+
+function jl_perturb(
+    eq,
+    deltas; 
+    objective = nothing, 
+    constraints = nothing, 
+    order = 2, 
+    tr_ratio = 0.1, 
+    weight = "auto", 
+    include_f = true, 
+    verbose = 1, 
+    copy = false
+)
+    py"""
+    import numpy as np
+    import desc
+    def func_call():
+        return $eq.perturb(
+            $deltas,
+            objective = $objective, 
+            constraints = $constraints, 
+            order = $order, 
+            tr_ratio = $tr_ratio, 
+            weight = $weight, 
+            include_f = $include_f, 
+            verbose = $verbose, 
+            copy = $copy
+        ) 
+    """
+    result = py"func_call"()
+end
