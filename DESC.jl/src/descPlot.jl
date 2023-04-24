@@ -1,8 +1,8 @@
 using PyCall 
 
-function jl_plotting_plot_1d(
+function plot_1d(
     eq, 
-    name, 
+    name;
     grid = nothing, 
     log = false, 
     ax = nothing,  
@@ -33,7 +33,7 @@ function jl_plotting_plot_1d(
 end 
 
 
-function jl_plotting_plot_2d(
+function plot_2d(
     eq, 
     name, 
     grid = nothing, 
@@ -67,7 +67,7 @@ function jl_plotting_plot_2d(
     plt.show()
 end 
 
-function jl_plotting_plot_3d(
+function plot_3d(
     eq, 
     name, 
     grid = nothing, 
@@ -102,7 +102,7 @@ function jl_plotting_plot_3d(
 end 
 
 
-function jl_plotting_plot_basis(
+function plot_basis(
     basis; 
     return_data = false, 
     kwargs...
@@ -128,7 +128,7 @@ end
 
 
 
-function jl_plotting_plot_boozer_modes(
+function plot_boozer_modes(
     eq; 
     log = true, 
     B0 = true, 
@@ -166,7 +166,7 @@ end
 
 
 
-function jl_plotting_plot_boozer_surface(
+function plot_boozer_surface(
     eqs; 
     grid_compute = nothing, 
     grid_plot = nothing, 
@@ -201,7 +201,7 @@ function jl_plotting_plot_boozer_surface(
 end 
 
 
-function jl_plotting_plot_boundaries(
+function plot_boundaries(
     eqs; 
     labels = nothing, 
     zeta = nothing, 
@@ -232,7 +232,7 @@ function jl_plotting_plot_boundaries(
 end 
 
 
-function jl_plotting_plot_boundary(
+function plot_boundary(
     eq; 
     zeta = nothing, 
     plot_axis = false, 
@@ -262,7 +262,7 @@ function jl_plotting_plot_boundary(
     plt.show()
 end 
 
-function jl_plotting_plot_coefficients(
+function plot_coefficients(
     eq; 
     L = true, 
     M = true, 
@@ -295,8 +295,8 @@ end
 
 
 
-function jl_plotting_plot_coils(
-    coils, 
+function plot_coils(
+    coils;
     grid = nothing, 
     ax = nothing, 
     return_data = false, 
@@ -311,7 +311,7 @@ function jl_plotting_plot_coils(
 
     def plot():
         return desc.plotting.plot_coils(
-            coils = $coils, 
+            $coils, 
             grid = $grid, 
             ax = $ax, 
             return_data = $return_data, 
@@ -325,11 +325,12 @@ end
 
 
 
-function jl_plotting_plot_comparison(
+function plot_comparison(
     eqs; 
     rho = 8,
     theta = 8, 
     zeta = nothing, 
+    ax = nothing, 
     cmap = "rainbow", 
     colors = nothing, 
     lws = nothing, 
@@ -347,10 +348,11 @@ function jl_plotting_plot_comparison(
 
     def plot():
         return desc.plotting.plot_comparison(
-            eqs; 
-            rho = $rho;
+            $eqs, 
+            rho = $rho, 
             theta = $theta, 
             zeta = $zeta, 
+            ax = $ax, 
             cmap = $cmap, 
             colors = $colors, 
             lws = $lws, 
@@ -365,7 +367,7 @@ function jl_plotting_plot_comparison(
     plt.show()
 end 
 
-function jl_plotting_plot_field_lines_sfl(
+function plot_field_lines_sfl(
     eq, 
     rho;
     seed_thetas = 0, 
@@ -402,7 +404,7 @@ function jl_plotting_plot_field_lines_sfl(
 end 
 
 
-function jl_plotting_plot_fsa(
+function plot_fsa(
     eq, 
     name, 
     wirth_sqrt_g = true, 
@@ -444,7 +446,7 @@ end
 
 
 
-function jl_plotting_plot_grid(
+function plot_grid(
     grid;
     return_data = false, 
     kwargs...
@@ -470,7 +472,7 @@ end
 
 
 
-function jl_plotting_plot_qs_error(
+function plot_qs_error(
     eq; 
     log=true, 
     fB = true, 
@@ -513,7 +515,7 @@ end
 
 
 
-function jl_plotting_plot_logo(;
+function plot_logo(;
     savepath = nothing, 
     kwargs...
 )
@@ -535,7 +537,7 @@ function jl_plotting_plot_logo(;
     plt.show()
 end 
 
-function jl_plotting_plot_section(
+function plot_section(
     eq, 
     name;
     grid = nothing, 
@@ -571,7 +573,7 @@ function jl_plotting_plot_section(
 end 
 
 
-function jl_plotting_plot_surfaces(
+function plot_surfaces(
     eq; 
     rho = 8, 
     theta = 8, 

@@ -1,7 +1,7 @@
 @testset "Simple Continuation Test" begin 
 
-eq = DESC.jl_equilibrium()
-eq_fam = DESC.jl_equilibria_family(eq)
+eq = DESC.Equilibrium()
+eq_fam = DESC.EquilibriaFamily(eq)
 
 new_eq_fam = DESC.solve_continuation(
     eq_fam, 
@@ -20,7 +20,7 @@ surf = DESC.jl_fourierRZToroidalSurface(
     NFP = 4
   )
 
-  new_eq = DESC.jl_equilibrium(
+  new_eq = DESC.Equilibrium(
       M = 9, 
       N = 8, 
       Psi=0.04, 
