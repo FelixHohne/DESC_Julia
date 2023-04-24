@@ -1,15 +1,15 @@
-function jl_solve_continuation(
+function solve_continuation(
     eqfam;
     objective = "force", 
     optimizer = "lsq-exact", 
     pert_order = 2, 
     ftol = nothing, 
-    xtol = nothing, 
+    xtol = nothing,
+    gtol = nothing,  
     nfev = 100, 
     verbose = 1, 
     checkpoint_path = nothing
 )
-    # TODO: Natively support kwargs
     py"""
     import numpy as np
     import desc
@@ -17,12 +17,13 @@ function jl_solve_continuation(
     
     def create_solve_continuation():
         return desc.continuation.solve_continuation(
-            eq = $eq, 
+            $eqfam, 
             objective = $objective, 
             optimizer = $optimizer, 
             pert_order = $pert_order, 
             ftol = $ftol, 
             xtol = $xtol, 
+            gtol = $gtol, 
             nfev = $nfev, 
             verbose = $verbose, 
             checkpoint_path = $checkpoint_path
@@ -33,10 +34,20 @@ function jl_solve_continuation(
 
 end 
 
-function jl_solve_continuation_automatic(
-    eq;objective = "force", optimizer = "lsq-exact", pert_order = 2, ftol = nothing, 
-    xtol = nothing, nfev = 100, verbose = 1, checkpoint_path = nothing,
-    mres_step = 6, pres_step = 0.5, bdry_step = 0.25
+function solve_continuation_automatic(
+    eq;
+    objective = "force", 
+    optimizer = "lsq-exact", 
+    pert_order = 2, 
+    ftol = nothing, 
+    xtol = nothing, 
+    gtol = nothing, 
+    nfev = 100, 
+    verbose = 1, 
+    checkpoint_path = nothing,
+    mres_step = 6, 
+    pres_step = 0.5, 
+    bdry_step = 0.25
 )
     py"""
     import numpy as np
@@ -47,7 +58,7 @@ function jl_solve_continuation_automatic(
     def create_solve_continuation_automatic():
         return desc.continuation.solve_continuation_automatic(
             eq = $eq, objective = $objective, optimizer = $optimizer, 
-            pert_order = $pert_order, ftol = $ftol, xtol = $xtol, 
+            pert_order = $pert_order, ftol = $ftol, xtol = $xtol, gtol=$gtol, 
             nfev = $nfev, verbose = $verbose, checkpoint_path = $checkpoint_path, 
             mres_step = $mres_step, pres_step = $pres_step, bdry_step = $bdry_step
         )
