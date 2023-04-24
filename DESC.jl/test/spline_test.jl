@@ -106,7 +106,6 @@ PLOTTING = false
   DESC.jl_plotting_plot_section(eq1, "|F|", norm_F=true, log=true)
 
 
- 
 #   println("Pressure values at these knots:\n", pressure.params)
 #   println("Rotational Transform rho knots:\n", iota._knots)
 #   println("Rotational Transform  values at these knots:\n", iota.params)

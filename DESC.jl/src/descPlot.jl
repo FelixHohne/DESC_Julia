@@ -35,7 +35,7 @@ end
 
 function plot_2d(
     eq, 
-    name, 
+    name;
     grid = nothing, 
     log = false, 
     norm_F = false,

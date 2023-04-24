@@ -12,13 +12,6 @@ using PlasmaEquilibriumToolkit
 
 # Write your package code here.
 
-
-include("exports.jl")
-include("descTypes.jl")
-include("zernike.jl")
-include("descUtil.jl")
-include("descSurface.jl")
-include("descOutputs.jl")
 include("descOptimizers.jl")
 include("descEquilibrium.jl")
 include("descGrid.jl")

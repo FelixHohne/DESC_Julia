@@ -91,7 +91,7 @@ end
 
 
 
-function jl_fourierRZToroidalSurface(;
+function FourierRZToroidalSurface(;
     R_lmn = nothing, 
     Z_lmn = nothing, 
     modes_R = nothing, 
@@ -108,12 +108,37 @@ function jl_fourierRZToroidalSurface(;
     import desc.geometry
     import numpy as np  
 
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+    
+    if isinstance($modes_R, np.ndarray):
+        n_modes_R = np.ascontiguousarray($modes_R)
+        assert n_modes_R.flags['C_CONTIGUOUS']
+    else:
+        n_modes_R = $modes_R
+
+    if isinstance($modes_Z, np.ndarray):
+        n_modes_Z = np.ascontiguousarray($modes_Z)
+        assert n_modes_Z.flags['C_CONTIGUOUS']
+    else:
+        n_modes_Z = $modes_Z
+
+
     def create_fourier_rz_toroidal_surface():
         return desc.geometry.FourierRZToroidalSurface(
-            R_lmn = $R_lmn, 
-            Z_lmn = $Z_lmn, 
-            modes_R = $modes_R, 
-            modes_Z = $modes_Z, 
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
+            modes_R = n_modes_R, 
+            modes_Z = n_modes_Z, 
             NFP = $NFP, 
             sym = $sym, 
             rho = $rho, 

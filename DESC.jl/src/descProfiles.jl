@@ -1,6 +1,6 @@
 using PyCall 
 
-function jl_profiles_power_series_profile(;
+function PowerSeriesProfile(;
     params = [0], 
     modes = nothing, 
     grid = nothing, 
@@ -25,7 +25,7 @@ function jl_profiles_power_series_profile(;
 end 
 
 
-function jl_profiles_spline_profile(;    
+function SplineProfile(;    
     # TODO: Where did params go
     values = [0, 0, 0], 
     knots = nothing, 
@@ -51,7 +51,7 @@ function jl_profiles_spline_profile(;
 end 
 
 
-function jl_profiles_MTanhProfile(;    
+function MTanhProfile(;    
     params = [0, 0, 1, 1, 0], 
     grid = nothing, 
     name = ""
@@ -71,7 +71,7 @@ function jl_profiles_MTanhProfile(;
     output = py"create_MTanhProfile_profile"()
 end 
 
-function jl_profiles_fourier_zernike_profile(;    
+function FourierZernikeProfile(;    
     params = [0],
     modes = nothing, 
     grid = nothing, 
@@ -97,7 +97,7 @@ function jl_profiles_fourier_zernike_profile(;
     output = py"create_FourierZernike_profile"()
 end 
 
-function jl_profiles_scaled_profile(;    
+function ScaledProfile(;    
     profile, 
     scale
 ) 
@@ -115,7 +115,7 @@ function jl_profiles_scaled_profile(;
     output = py"create_scaled_profile"()
 end 
 
-function jl_profiles_sum_profile(;    
+function SumProfile(;    
     profiles
 ) 
     py"""
@@ -131,7 +131,7 @@ function jl_profiles_sum_profile(;
     output = py"create_sum_profile"()
 end 
 
-function jl_profiles_product_profile(;    
+function ProductProfile(;    
     profiles
 ) 
     py"""
@@ -140,7 +140,7 @@ function jl_profiles_product_profile(;
     import numpy as np  
 
     def create_product_profile():
-        return desc.profiles.ProductFile(
+        return desc.profiles.ProductProfile(
             profiles = $profiles
         )
     """

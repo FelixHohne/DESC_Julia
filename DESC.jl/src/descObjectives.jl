@@ -133,7 +133,7 @@ function jl_objective_energy(;
 end 
 
 
-function jl_objective_force_balance(;
+function ForceBalance(;
     eq = nothing,  
     target = 0, 
     bounds = nothing, 
@@ -309,7 +309,7 @@ function jl_objective_mercier_stability(;
     output = py"create_mercier_stability_objective"()
 end 
 
-function jl_objective_function(;
+function ObjectiveFunction(;
     objectives = nothing, 
     eq=nothing, 
     use_jit=true, 

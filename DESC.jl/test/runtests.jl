@@ -3,6 +3,7 @@ using DESC
 using Test
 using PyCall
 
+include("current_constrainted_test.jl")
 include("equilibrium_test.jl")
 include("basis_test.jl")
 include("continuation_test.jl")
