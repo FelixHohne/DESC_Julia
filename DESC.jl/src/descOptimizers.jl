@@ -1,7 +1,7 @@
 using PyCall
 
 
-function jl_create_optimizer(method) 
+function Optimizer(method) 
     py"""
     def create_optimizer():
         return desc.optimize.Optimizer(

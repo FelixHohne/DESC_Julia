@@ -149,16 +149,6 @@ function jl_save_equilibrium(eq, file_name; file_format = "hdf5")
 end 
 
 
-function eq_load(load_from, file_format) 
-    py"""
-    import numpy as np
-    import desc
-    import desc.equilibrium
-    def load_eq():
-        return desc.equilibrium.Equilibrium.load($load_from, $file_format)
-    """
-    output = py"load_eq"()
-end 
 
 
 function jl_equilibrium_family_append(eq_fam, eq) 
@@ -335,4 +325,279 @@ function from_near_axis(
     output = py"from_naxis"()
 end 
 
+function equilibrium_compute(
+    eq, 
+    names;
+    grid = nothing, 
+    params = nothing, 
+    transformers = nothing, 
+    profiles = nothing, 
+    data = nothing, 
+    kwargs...
+)
 
+    kwargs_dict = Dict(pairs(kwargs))
+
+    py"""
+    import numpy as np
+    import desc
+
+    new_params = {}
+    for item in $params:
+        key = item 
+        value = $params[item]
+
+        if isinstance(value, np.ndarray):
+            new_value = np.ascontiguousarray(value)
+            new_params[key] = new_value
+    
+        else:
+            new_params[key] = value 
+    
+    new_profiles = {}
+    for item in $profiles:
+        key = item 
+        value = $profiles[item]
+
+        if isinstance(value, np.ndarray):
+            new_value = np.ascontiguousarray(value)
+            new_profiles[key] = new_value
+    
+        else:
+            new_profiles[key] = value 
+
+
+    def compute():
+        return $eq.compute(
+            $names, 
+            grid = $grid, 
+            params = new_params, 
+            transforms = $transforms, 
+            profiles = new_profiles, 
+            data = $data, 
+            **$kwargs_dict
+
+        )
+    """
+    output = py"compute"()
+end
+
+function equilibrium_compute_flux_coords(
+    eq, 
+    real_coords;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    tol = 1e-6, 
+    maxiter = 20, 
+    rhomin = 1e-6
+)
+    py"""
+    import numpy as np
+    import desc
+
+    if isinstance($real_coords, np.ndarray):
+        new_real_coords = np.ascontiguousarray($real_coords)
+        assert real_coords.flags['C_CONTIGUOUS']
+    else:
+        new_real_coords = $real_coords
+    
+    if isinstance($R_lmn, np.ndarray):
+        new_R_lmn = np.ascontiguousarray($R_lmn)
+        assert R_lmn.flags['C_CONTIGUOUS']
+    else:
+        new_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        new_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        new_Z_lmn = $Z_lmn
+    
+
+    def compute_flux_coords():
+        return $eq.compute_flux_coords(
+            new_real_coords, 
+            R_lmn = new_R_lmn, 
+            Z_lmn = new_Z_lmn, 
+            tol = $tol, 
+            maxiter = $maxiter, 
+            rhomin = $rhomin
+        )
+    """
+    output = py"compute_flux_coords"()
+end 
+
+
+function equilibrium_compute_theta_coords(
+    eq, 
+    flux_coords;
+    L_lmn = nothing, 
+    tol = 1e-6, 
+    maxiter = 20
+)
+    py"""
+    import numpy as np
+    import desc
+
+    if isinstance($flux_coords, np.ndarray):
+        new_flux_coords = np.ascontiguousarray($flux_coords)
+        assert flux_coords.flags['C_CONTIGUOUS']
+    else:
+        new_flux_coords = $flux_coords
+    
+    if isinstance($L_lmn, np.ndarray):
+        new_L_lmn = np.ascontiguousarray($L_lmn)
+        assert L_lmn.flags['C_CONTIGUOUS']
+    else:
+        new_L_lmn = $L_lmn
+    
+
+    def compute_theta_coords():
+        return $eq.compute_theta_coords(
+            new_flux_coords, 
+            L_lmn = nenew_L_lmn, 
+            tol = $tol, 
+            maxiter = $maxiter
+        )
+    """
+    output = py"compute_theta_coords"()
+end
+
+function equilibrium_is_nested(
+    eq;
+    grid = nothing, 
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    msg = nothing
+)
+    py"""
+    import numpy as np
+    import desc
+
+    if isinstance($R_lmn, np.ndarray):
+        new_R_lmn = np.ascontiguousarray($R_lmn)
+        assert R_lmn.flags['C_CONTIGUOUS']
+    else:
+        new_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        new_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        new_Z_lmn = $Z_lmn
+    
+    def is_nested():
+        return $eq.is_nested(
+            grid = $grid, 
+            R_lmn = new_R_lmn,
+            Z_lmn = new_Z_lmn, 
+            msg = $msg
+        )
+    """
+    output = py"is_nested"()
+end
+
+function equilibrium_load(load_from, file_format) 
+    py"""
+    import numpy as np
+    import desc
+    import desc.equilibrium
+    def load_eq():
+        return desc.equilibrium.Equilibrium.load($load_from, $file_format)
+    """
+    output = py"load_eq"()
+end 
+
+function equilibrium_optimize(
+    eq;
+    objective = nothing,
+    constraints = nothing, 
+    optimizer = "proximal-lsq-exact", 
+    ftol = nothing, 
+    xtol = nothing,
+    gtol = nothing, 
+    maxiter = 50, 
+    x_scale = "auto", 
+    options = nothing, 
+    verbose = 1, 
+    copy = false
+)
+    py"""
+    import numpy as np
+    import desc
+
+    if isinstance($x_scale, np.ndarray):
+        new_x_scale = np.ascontiguousarray($x_scale)
+        assert x_scale.flags['C_CONTIGUOUS']
+    else:
+        new_x_scale = $x_scale
+
+    def optimize():
+        return $eq.optimize(
+            objective = $objective,
+            constraints = $constraints, 
+            optimizer = $optimizer, 
+            ftol = $ftol, 
+            xtol = $xtol,
+            gtol = $gtol, 
+            maxiter = $maxiter, 
+            x_scale = new_x_scale, 
+            options = $options, 
+            verbose = $verbose, 
+            copy = $copy
+        )
+    """
+    output = py"optimize"()
+end
+
+
+function equilibrium_perturb(
+    eq, 
+    deltas;
+    objective = nothing, 
+    constraints = nothing, 
+    order = 2, 
+    tr_ratio = 0.1, 
+    weight = 'auto', 
+    incldue_f = true, 
+    verbose = 1, 
+    copy = false
+)
+
+    py"""
+    import numpy as np
+    import desc
+
+    new_deltas = {}
+    for item in $deltas:
+        key = item 
+        value = $deltas[item]
+
+        if isinstance(value, np.ndarray):
+            new_value = np.ascontiguousarray(value)
+            new_deltas[key] = new_value
+    
+        else:
+            new_deltas[key] = value 
+    
+    if isinstance($weight, np.ndarray):
+        new_weight = np.ascontiguousarray($weight)
+        assert new_weight.flags['C_CONTIGUOUS']
+    else:
+        new_weight = $weight
+
+    def compute():
+        return $eq.perturb(
+            new_deltas,
+            objective = $objective, 
+            constraints = $constraints, 
+            order = $order, 
+            tr_ratio = $tr_ratio, 
+            weight = new_weight,
+            include_f = $include_f, 
+            verbose = $verbose, 
+            copy = $copy
+        )
+    """
+    output = py"compute"()
+end
