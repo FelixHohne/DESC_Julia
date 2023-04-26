@@ -136,7 +136,7 @@ function basis_evaluate(
         else:
             new_modes = $modes
 
-        $basis.evaluate(
+        return $basis.evaluate(
             new_nodes, 
             derivatives=new_derivatives, 
             modes = new_modes, 
@@ -168,8 +168,9 @@ function basis_get_idx(;
 end
 
 
+# basis type one of `{PowerSeries, FourierSeries, DoubleFourierSeries, ZernikePolynomial, FourierZernikeBasis}`
 function basis_load(
-   basis,
+   basis_type :: String,
    load_from; 
    file_format = nothing
 )
@@ -177,10 +178,31 @@ function basis_load(
     import desc 
     import desc.basis 
     def load():
-        $basis.load(
-            $load_from, 
-            file_format = $file_format
-        ) 
+        if $basis_type == "PowerSeries"
+            return desc.basis.PowerSeries.load(
+                $load_from, 
+                file_format = $file_format
+            ) 
+        elif $basis_type == "FourierSeries":
+            return desc.basis.FourierSeries.load(
+                $load_from, 
+                file_format = $file_format
+            ) 
+        elif $basis_type == "DoubleFourierSeries":
+            return desc.basis.DoubleFourierSeries.load(
+                $load_from, 
+                file_format = $file_format
+            ) 
+        elif $basis_type == "ZernikePolynomial":
+            return desc.basis.ZernikePolynomial.load(
+                $load_from, 
+                file_format = $file_format
+            ) 
+        elif $basis_type == "FourierZernikeBasis":
+            return desc.basis.FourierZernikeBasis.load(
+                $load_from, 
+                file_format = $file_format
+            ) 
     """
     output = py"load"()
 end

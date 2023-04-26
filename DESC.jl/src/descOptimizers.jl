@@ -69,7 +69,6 @@ function optimize_optimize(
     optimize_result = py"execute_optimize_command"()
 end 
 
-
 # function jl_optimize_fmintr(
 #     fun, 
 #     x0, 
