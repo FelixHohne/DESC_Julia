@@ -423,6 +423,90 @@ import numpy as np
     output = py"compute"()
 end 
 
+# Implemented for FourierRZToroidalSurface
+function geometry_compute_coordinates(
+    curve;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    grid = nothing, 
+    dt = 0, 
+    dz = 0, 
+    basis = "rpz"
+)
+
+py"""
+import desc 
+import desc.geometry
+import numpy as np  
+
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+
+
+    def compute():
+        return $curve.compute_coordinates(
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
+            grid = $grid, 
+            dt = $dt, 
+            dz = $dz, 
+            basis = $basis
+        )
+    """
+    output = py"compute"()
+end 
+
+# Implemented for ZernikeRZToroidalSection
+function geometry_compute_coordinates(
+    curve;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    grid = nothing, 
+    dr = 0, 
+    dt = 0, 
+    basis = "rpz"
+)
+
+py"""
+import desc 
+import desc.geometry
+import numpy as np  
+
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+
+    def compute():
+        return $curve.compute_coordinates(
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
+            grid = $grid, 
+            dr = $dr, 
+            dt = $dt, 
+            basis = $basis
+        )
+    """
+    output = py"compute"()
+end 
+
+
 # Implemented for FourierRZCurve
 function geometry_compute_curvature(
     curve;
@@ -546,6 +630,82 @@ import numpy as np
     """
     output = py"compute"()
 end 
+
+
+# Implemented for FourierRZToroidalSurface
+function geometry_compute_curvature(
+    curve;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    grid = nothing, 
+    dt = 0, 
+    dz = 0, 
+    basis = "rpz"
+)
+
+py"""
+import desc 
+import desc.geometry
+import numpy as np  
+
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+
+
+    def compute():
+        return $curve.compute_curvature(
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
+            grid = $grid
+        )
+    """
+    output = py"compute"()
+end 
+
+# Implemented for ZernikeRZToroidalSection
+function geometry_compute_coordinates(
+    curve;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    grid = nothing
+)
+
+py"""
+import desc 
+import desc.geometry
+import numpy as np  
+
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+
+    def compute():
+        return $curve.compute_coordinates(
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
+            grid = $grid
+            )
+    """
+    output = py"compute"()
+end 
+
 
 # Implemented for FourierRZCurve
 function geometry_compute_frenet_frame(
@@ -677,6 +837,81 @@ import numpy as np
     output = py"compute"()
 end 
 
+# Implemented for FourierRZToroidalSurface
+function geometry_compute_normal(
+    curve;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    grid = nothing, 
+    basis = "rpz"
+)
+
+py"""
+import desc 
+import desc.geometry
+import numpy as np  
+
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+
+
+    def compute():
+        return $curve.compute_normal(
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
+            grid = $grid, 
+            basis = $basis
+        )
+    """
+    output = py"compute"()
+end 
+
+# Implemented for ZernikeRZToroidalSection
+function geometry_compute_normal(
+    curve;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    grid = nothing, 
+    basis = "rpz"
+)
+
+py"""
+import desc 
+import desc.geometry
+import numpy as np  
+
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+
+    def compute():
+        return $curve.compute_normal(
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
+            grid = $grid,
+            basis = $basis
+        )
+    """
+    output = py"compute"()
+end 
+
 # Implemented for FourierRZCurve
 function geometry_compute_length(
     curve;
@@ -796,6 +1031,77 @@ import numpy as np
             center = n_center, 
             normal = n_normal, 
             r_n = n_r_n, 
+            grid = $grid
+        )
+    """
+    output = py"compute"()
+end 
+
+# Implemented for FourierRZToroidalSurface
+function geometry_compute_surface_area(
+    curve;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    grid = nothing
+)
+
+py"""
+import desc 
+import desc.geometry
+import numpy as np  
+
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+
+
+    def compute():
+        return $curve.compute_surface_area(
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
+            grid = $grid 
+        )
+    """
+    output = py"compute"()
+end 
+
+# Implemented for ZernikeRZToroidalSection
+function geometry_compute_surface_area(
+    curve;
+    R_lmn = nothing, 
+    Z_lmn = nothing, 
+    grid = nothing
+)
+
+py"""
+import desc 
+import desc.geometry
+import numpy as np  
+
+    if isinstance($R_lmn, np.ndarray):
+        n_R_lmn = np.ascontiguousarray($R_lmn)
+        assert n_R_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_R_lmn = $R_lmn
+
+    if isinstance($Z_lmn, np.ndarray):
+        n_Z_lmn = np.ascontiguousarray($Z_lmn)
+        assert n_Z_lmn.flags['C_CONTIGUOUS']
+    else:
+        n_Z_lmn = $Z_lmn
+
+    def compute():
+        return $curve.surface_area(
+            R_lmn = n_R_lmn, 
+            Z_lmn = n_Z_lmn, 
             grid = $grid
         )
     """
