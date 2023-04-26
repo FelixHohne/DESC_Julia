@@ -11,7 +11,6 @@ function desc_jl_use_gpu_if_available()
     py"use_gpu"()
 end
 
-
 function get_fixed_boundary_constraints(; 
     profiles=true, iota = true, kinetic=false, normalize=true)
 

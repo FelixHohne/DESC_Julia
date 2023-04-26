@@ -12,7 +12,7 @@ new_eq_fam = DESC.solve_continuation(
     verbose = 3
 )
 
-surf = DESC.jl_fourierRZToroidalSurface(
+surf = DESC.FourierRZToroidalSurface(
     R_lmn = [1, 0.125, 0.1],
     Z_lmn = [-0.125, -0.1],
     modes_R = [[0, 0], [1, 0], [0, 1]],

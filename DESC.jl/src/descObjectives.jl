@@ -245,7 +245,7 @@ function MagneticWell(;
     output = py"create_magnetic_well_objective"()
 end 
 
-function MeanCurvature((;
+function MeanCurvature(;
     eq = nothing,  
     target = nothing, 
     bounds = (-Inf, 0), 

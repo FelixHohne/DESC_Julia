@@ -3,7 +3,7 @@ PLOTTING = false
 
   DESC.desc_jl_use_gpu_if_available()
 
-  surface = DESC.jl_fourierRZToroidalSurface(
+  surface = DESC.FourierRZToroidalSurface(
     R_lmn = [10, 1],
     modes_R = [[0, 0], [1, 0]],
     Z_lmn = [0, -1],
@@ -14,11 +14,11 @@ PLOTTING = false
   pressure_values = zeros(20)
   iota_values = 1 .+ 1.5 * (knots.^2)
 
-  pressure = DESC.jl_profiles_spline_profile(
+  pressure = DESC.SplineProfile(
     values = pressure_values, knots = knots
   )
 
-  iota = DESC.jl_profiles_spline_profile(
+  iota = DESC.SplineProfile(
     values = iota_values, 
     knots = knots
   )
@@ -26,7 +26,7 @@ PLOTTING = false
   rtol = 1.0E-6
   @test isapprox(pressure._knots[length(pressure._knots) - 1], 0.94736842)
   
-  eq = DESC.jl_equilibrium(
+  eq = DESC.Equilibrium(
     surface=surface,
     pressure=pressure,
     iota=iota,
@@ -42,44 +42,44 @@ PLOTTING = false
   )
 
   if PLOTTING
-    DESC.jl_plotting_plot_section(eq, "|F|", norm_F = true, log=true)
+    DESC.plot_section(eq, "|F|", norm_F = true, log=true)
   end 
 
-  optimizer = DESC.jl_create_optimizer("lsq-exact")
+  optimizer = DESC.Optimizer("lsq-exact")
   constraints = (
-        DESC.jl_objective_fix_boundary_r(), 
-        DESC.jl_objective_fix_boundary_z(), 
-        DESC.jl_objective_fix_pressure(), 
-        DESC.jl_objective_fix_iota(), 
-        DESC.jl_objective_fix_psi()
+        DESC.FixBoundaryR(), 
+        DESC.FixBoundaryZ(), 
+        DESC.FixPressure(), 
+        DESC.FixIota(), 
+        DESC.FixPsi()
   )
 
-  objectives = DESC.jl_objective_force_balance()
-  obj = DESC.jl_objective_function(objectives)
+  objectives = DESC.ForceBalance()
+  obj = DESC.ObjectiveFunction(objectives)
 
 
-  DESC.jl_solve_equilibrium(eq, 
+  eq.solve(
     verbose=2, ftol=1e-8, objective=obj, optimizer=optimizer, constraints=constraints
   )
 
   if PLOTTING
-    DESC.jl_plotting_plot_surfaces(
+    DESC.plot_surfaces(
       eq
     )
 
-    DESC.jl_plotting_plot_section(
+    DESC.plot_section(
       eq, 
       "|F|", 
       norm_F=true, log=true
     )
-    DESC.jl_plotting_plot_1d(eq, "p");
+    DESC.plot_1d(eq, "p");
   end 
 
   delta_p = zeros(Int, size(eq.p_l))
   p_values = 1000 * (1 .- eq.pressure._knots .^2)
   delta_p = p_values 
 
-  eq1 = DESC.jl_perturb(
+  eq1 = DESC.equilibrium_perturb(
     eq, 
     Dict("p_l" => delta_p), 
     order = 2
@@ -89,21 +89,21 @@ PLOTTING = false
   # @test isapprox(eq1.pressure.params, 1000 * (1 .- eq.pressure._knots .^ 2))
 
   if PLOTTING 
-    DESC.jl_plotting_plot_section(eq1, "|F|", norm_F=true, log=true);
+    DESC.plot_section(eq1, "|F|", norm_F=true, log=true);
   end 
   
   constraints = (
-    DESC.jl_objective_fix_boundary_r(), 
-    DESC.jl_objective_fix_boundary_z(), 
-    DESC.jl_objective_fix_pressure(), 
-    DESC.jl_objective_fix_iota(), 
-    DESC.jl_objective_fix_psi()
+    DESC.FixBoundaryR(), 
+    DESC.FixBoundaryZ(), 
+    DESC.FixPressure(), 
+    DESC.FixIota(), 
+    DESC.FixPsi()
   )
 
-  objective = DESC.jl_objective_force_balance()
-  obj = DESC.jl_objective_function(objectives=objectives)
-  DESC.jl_solve_equilibrium(eq, verbose=2, ftol = 1e-4, optimizer=optimizer, constraints=constraints, objective=obj)
-  DESC.jl_plotting_plot_section(eq1, "|F|", norm_F=true, log=true)
+  objective = DESC.ForceBalance()
+  obj = DESC.ObjectiveFunction(objectives=objectives)
+  eq.solve(verbose=2, ftol = 1e-4, optimizer=optimizer, constraints=constraints, objective=obj)
+  DESC.plot_section(eq1, "|F|", norm_F=true, log=true)
 
 
 #   println("Pressure values at these knots:\n", pressure.params)

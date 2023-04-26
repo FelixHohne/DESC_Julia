@@ -1,16 +1,16 @@
 @testset "DESC Interactive example" begin 
     DESC.desc_jl_use_gpu_if_available()
-    surface = DESC.jl_fourierRZToroidalSurface(
+    surface = DESC.FourierRZToroidalSurface(
         R_lmn=[10, 1],
         modes_R=[[0, 0], [1, 0]],  # modes given as [m,n] for each coefficient
         Z_lmn=[0, -1],
         modes_Z=[[0, 0], [-1, 0]],
     )
 
-    pressure = DESC.jl_profiles_power_series_profile(params=[0, 0], modes=[0, 2])
-    iota = DESC.jl_profiles_power_series_profile(params=[1, 1.5], modes=[0, 2])
+    pressure = DESC.PowerSeriesProfile(params=[0, 0], modes=[0, 2])
+    iota = DESC.PowerSeriesProfile(params=[1, 1.5], modes=[0, 2])
 
-    eq = DESC.jl_equilibrium(
+    eq = DESC.Equilibrium(
         surface=surface,
         pressure=pressure,
         iota=iota,
@@ -25,22 +25,21 @@
         sym=true,  # explicitly enforce stellarator symmetry
     )
 
-    optimizer = DESC.jl_create_optimizer("lsq-exact")
+    optimizer = DESC.Optimizer("lsq-exact")
 
     constraints = (
-        DESC.jl_objective_fix_boundary_r(), 
-        DESC.jl_objective_fix_boundary_z(), 
-        DESC.jl_objective_fix_pressure(), 
-        DESC.jl_objective_fix_iota(), 
-        DESC.jl_objective_fix_psi()
+        DESC.FixBoundaryR(), 
+        DESC.FixBoundaryZ(), 
+        DESC.FixPressure(), 
+        DESC.FixIota(), 
+        DESC.FixPsi()
     )
 
-    objectives = DESC.jl_objective_force_balance()
-    obj = DESC.jl_objective_function(objectives)
-    constraints2 = DESC.jl_get_fixed_boundary_constraints()
+    objectives = DESC.ForceBalance()
+    obj = DESC.ObjectiveFunction(objectives)
+    constraints2 = DESC.get_fixed_boundary_constraints()
 
-    DESC.jl_solve_equilibrium(
-        eq,
+    eq.solve(
         verbose=3, 
         ftol=1e-8, 
         maxiter=50, 

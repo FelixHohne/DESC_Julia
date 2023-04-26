@@ -151,7 +151,7 @@ end
 
 
 
-function jl_equilibrium_family_append(eq_fam, eq) 
+function equilibrium_family_append(eq_fam, eq) 
     py"""
     import numpy as np
     import desc
@@ -159,16 +159,6 @@ function jl_equilibrium_family_append(eq_fam, eq)
         $eq_fam.append($eq) 
     """
     py"append"()
-end 
-
-function jl_save_equilibrium_family(eq_fam, file_name; file_format = "hdf5")
-    py"""
-    import numpy as np
-    import desc
-    def save_eq_fam():
-        $eq_fam.save($file_name, $file_format) 
-    """
-    py"save_eq_fam"()
 end 
 
 function jl_solve_equilibrium(
@@ -558,7 +548,7 @@ function equilibrium_perturb(
     constraints = nothing, 
     order = 2, 
     tr_ratio = 0.1, 
-    weight = 'auto', 
+    weight = "auto", 
     include_f = true, 
     verbose = 1, 
     copy = false

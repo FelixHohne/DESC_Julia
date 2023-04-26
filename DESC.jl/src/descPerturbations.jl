@@ -31,51 +31,51 @@ function perturb(
     copy = true
 )
 
-py"""
-import desc 
-import desc.perturbations
-import numpy as np  
+    py"""
+    import desc 
+    import desc.perturbations
+    import numpy as np  
 
-new_deltas = {}
-for item in $deltas:
-    key = item 
-    value = $deltas[item]
+    new_deltas = {}
+    for item in $deltas:
+        key = item 
+        value = $deltas[item]
 
-    if isinstance(value, np.ndarray):
-        new_value = np.ascontiguousarray(value)
-        new_deltas[key] = new_value
+        if isinstance(value, np.ndarray):
+            new_value = np.ascontiguousarray(value)
+            new_deltas[key] = new_value
 
+        else:
+            new_deltas[key] = value 
+
+    if isinstance($weight, np.ndarray):
+        new_weight = np.ascontiguousarray($weight)
+        assert new_weight.flags['C_CONTIGUOUS']
     else:
-        new_deltas[key] = value 
+        new_weight = $weight
 
-if isinstance($weight, np.ndarray):
-    new_weight = np.ascontiguousarray($weight)
-    assert new_weight.flags['C_CONTIGUOUS']
-else:
-    new_weight = $weight
-
-if isinstance($tr_ratio, np.ndarray):
-    new_tr_ratio = np.ascontiguousarray($tr_ratio)
-    assert new_tr_ratio.flags['C_CONTIGUOUS']
-else:
-    new_tr_ratio = $tr_ratio
+    if isinstance($tr_ratio, np.ndarray):
+        new_tr_ratio = np.ascontiguousarray($tr_ratio)
+        assert new_tr_ratio.flags['C_CONTIGUOUS']
+    else:
+        new_tr_ratio = $tr_ratio
 
 
-def perturb():
-    return desc.perturbations.perturb(
-       eq = $eq, 
-       objective = $objective, 
-       constraints = $constraints, 
-       deltas = new_deltas, 
-       order = $order, 
-       tr_ratio = $new_tr_ratio, 
-       weight = new_weight, 
-       include_f = $include_f, 
-       verbose = $verbose, 
-       copy = $copy
-    )
-"""
-output = py"perturb"()
+    def perturb():
+        return desc.perturbations.perturb(
+        eq = $eq, 
+        objective = $objective, 
+        constraints = $constraints, 
+        deltas = new_deltas, 
+        order = $order, 
+        tr_ratio = $new_tr_ratio, 
+        weight = new_weight, 
+        include_f = $include_f, 
+        verbose = $verbose, 
+        copy = $copy
+        )
+    """
+    output = py"perturb"()
 end 
 
 

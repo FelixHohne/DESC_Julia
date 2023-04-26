@@ -40,7 +40,7 @@
     surface_3D.change_resolution(eq.L, eq.M, eq.N)
 
     objective = DESC.ObjectiveFunction(objectives=(DESC.ForceBalance()))
-    constraints = get_fixed_boundary_constraints(profiles=true, iota=false)
+    constraints = DESC.get_fixed_boundary_constraints(profiles=true, iota=false)
 
 
 
