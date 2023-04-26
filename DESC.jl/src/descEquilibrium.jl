@@ -559,7 +559,7 @@ function equilibrium_perturb(
     order = 2, 
     tr_ratio = 0.1, 
     weight = 'auto', 
-    incldue_f = true, 
+    include_f = true, 
     verbose = 1, 
     copy = false
 )
@@ -597,6 +597,34 @@ function equilibrium_perturb(
             include_f = $include_f, 
             verbose = $verbose, 
             copy = $copy
+        )
+    """
+    output = py"compute"()
+end
+
+
+function equilibrium_set_initial_guess(
+    eq;
+    args...
+)
+
+    py"""
+    import numpy as np
+    import desc
+
+    new_args = []
+    for item in $args:
+        arg = item
+
+        if isinstance(item, np.ndarray):
+            new_item = np.ascontiguousarray(item)    
+        else:
+            new_item = item 
+        new_args.append(new_item)
+
+    def compute():
+        return $eq.set_initial_guess(
+            *new_args
         )
     """
     output = py"compute"()
