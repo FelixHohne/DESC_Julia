@@ -1,6 +1,6 @@
 using PyCall
 
-function jl_objective_aspect_ratio(;
+function AspectRatio(;
     eq=nothing,
     target=2,
     bounds=nothing,
@@ -16,7 +16,6 @@ function jl_objective_aspect_ratio(;
     import desc
     import desc.objectives
     def create_objective_aspect_ratio():
-        # Not supporting grid
         return desc.objectives.AspectRatio(
             eq=$eq,
             target=$target,
@@ -24,12 +23,13 @@ function jl_objective_aspect_ratio(;
             weight=$weight,
             normalize=$normalize,
             normalize_target=$normalize_target,
+            grid = $grid, 
             name=$name)
     """
     output = py"create_objective_aspect_ratio"()
 end 
 
-function jl_objective_bootstrapRedlConsistency(
+function BootstrapRedlConsistency(
     eq = nothing, 
     target = 0, 
     bounds = nothing, 
@@ -54,7 +54,7 @@ function jl_objective_bootstrapRedlConsistency(
 end 
 
 
-function jl_objective_current_density(
+function CurrentDensity(
     equilibrium = nothing, 
     target = 0, 
     bounds = nothing, 
@@ -66,9 +66,7 @@ function jl_objective_current_density(
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_objective_current_density():
-        # Not supporting grid
         return desc.objectives.CurrentDensity(
             eq=$equilibrium, target=$target, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -78,7 +76,7 @@ function jl_objective_current_density(
 end 
 
 
-function jl_objective_elongation(
+function Elongation(
     equilibrium = nothing, 
     target = 1, 
     bounds = nothing, 
@@ -91,9 +89,7 @@ function jl_objective_elongation(
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_objective_elongation():
-        # Not supporting grid
         return desc.objectives.Elongation(
             eq=$equilibrium, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -105,7 +101,7 @@ function jl_objective_elongation(
 end 
 
 
-function jl_objective_energy(;
+function Energy(;
     eq = nothing, 
     target = 0, 
     bounds = nothing, 
@@ -119,9 +115,7 @@ function jl_objective_energy(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_objective_energy():
-        # Not supporting grid
         return desc.objectives.Energy(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -157,7 +151,7 @@ function ForceBalance(;
 end 
 
 
-function jl_objective_generic_objective(
+function GenericObjective(
     f; 
     eq = nothing,  
     target = 0, 
@@ -171,9 +165,7 @@ function jl_objective_generic_objective(
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_generic_objective():
-        # Not supporting grid
         return desc.objectives.GenericObjective(
             f=$f, eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -182,7 +174,7 @@ function jl_objective_generic_objective(
     output = py"create_generic_objective"()
 end 
 
-function jl_objective_helical_force_balance(;
+function HelicalForceBalance(;
     eq = nothing,  
     target = 0, 
     bounds = nothing, 
@@ -195,9 +187,7 @@ function jl_objective_helical_force_balance(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_helical_force_objective():
-        # Not supporting grid
         return desc.objectives.HelicalForceBalance(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -206,7 +196,7 @@ function jl_objective_helical_force_balance(;
     output = py"create_helical_force_objective"()
 end 
 
-function jl_objective_isodynamicity(;
+function Isodynamicity(;
     eq = nothing,  
     target = 0, 
     bounds = nothing, 
@@ -233,10 +223,7 @@ function jl_objective_isodynamicity(;
     output = py"create_isodynamicity_objective"()
 end 
 
-
-
-
-function jl_objective_magnetic_well(;
+function MagneticWell(;
     eq = nothing,  
     target = nothing, 
     bounds = (0, Inf), 
@@ -249,9 +236,7 @@ function jl_objective_magnetic_well(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_magnetic_well_objective():
-        # Not supporting grid
         return desc.objectives.MagneticWell(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -260,7 +245,7 @@ function jl_objective_magnetic_well(;
     output = py"create_magnetic_well_objective"()
 end 
 
-function jl_objective_mean_curvature(;
+function MeanCurvature((;
     eq = nothing,  
     target = nothing, 
     bounds = (-Inf, 0), 
@@ -273,9 +258,7 @@ function jl_objective_mean_curvature(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_mean_curvature_objective():
-        # Not supporting grid
         return desc.objectives.MeanCurvature(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -285,7 +268,7 @@ function jl_objective_mean_curvature(;
 end 
 
 
-function jl_objective_mercier_stability(;
+function MercierStability(;
     eq = nothing,  
     target = nothing, 
     bounds = (0, Inf), 
@@ -298,9 +281,7 @@ function jl_objective_mercier_stability(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_mercier_stability_objective():
-        # Not supporting grid
         return desc.objectives.MercierStability(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -331,7 +312,7 @@ end
 
 
 # The objectives field is required, so do not pass in as keyword argument. 
-function jl_objective_function(
+function ObjectiveFunction(
     objectives;
     eq=nothing, 
     use_jit=true, 
@@ -351,7 +332,7 @@ function jl_objective_function(
 
 end 
 
-function jl_objective_plasma_vessel_distance(;
+function PlasmaVesselDistance(;
     eq = nothing,  
     target = nothing, 
     bounds = (1, Inf), 
@@ -376,11 +357,7 @@ function jl_objective_plasma_vessel_distance(;
 end 
 
 
-
-
-
-
-function jl_objective_principal_curvature(;
+function PrincipalCurvature(;
     eq = nothing,  
     target = 1, 
     bounds = nothing, 
@@ -393,7 +370,6 @@ function jl_objective_principal_curvature(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_principal_curvature_objective():
         return desc.objectives.PrincipalCurvature(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
@@ -404,7 +380,7 @@ function jl_objective_principal_curvature(;
 end 
 
 
-function jl_objective_quasisymmetry_boozer(;
+function QuasisymmetryBoozer(;
     eq = nothing,  
     target = 0, 
     bounds = nothing, 
@@ -420,9 +396,7 @@ function jl_objective_quasisymmetry_boozer(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_quasisymmetry_boozer_objective():
-        # Not supporting grid
         return desc.objectives.QuasisymmetryBoozer(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -432,7 +406,7 @@ function jl_objective_quasisymmetry_boozer(;
     output = py"create_quasisymmetry_boozer_objective"()
 end 
 
-function jl_objective_quasisymmetry_two_term(;
+function QuasisymmetryTwoTerm(;
     eq = nothing, 
     target=0,  
     bounds = nothing, 
@@ -458,7 +432,7 @@ function jl_objective_quasisymmetry_two_term(;
 end 
 
 
-function jl_objective_quasisymmetry_triple_product(;
+function QuasisymmetryTripleProduct(;
     eq = nothing,  
     target = 0, 
     bounds = nothing, 
@@ -471,9 +445,7 @@ function jl_objective_quasisymmetry_triple_product(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_quasisymmetry_triple_product_objective():
-        # Not supporting grid
         return desc.objectives.QuasisymmetryTripleProduct(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -483,7 +455,7 @@ function jl_objective_quasisymmetry_triple_product(;
 end 
 
 
-function jl_objective_radial_force_balance(;
+function RadialForceBalance(;
     eq = nothing,  
     target = 0, 
     bounds = nothing, 
@@ -498,7 +470,6 @@ function jl_objective_radial_force_balance(;
     import desc
     # TODO: Grid
     def create_radial_force_balance_objective():
-        # Not supporting grid
         return desc.objectives.RadialForceBalance(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -510,7 +481,7 @@ end
 
 
 
-function jl_objective_rotational_transform(;
+function RotationalTransform(;
     eq = nothing,  
     target = 0, 
     bounds = nothing, 
@@ -523,9 +494,7 @@ function jl_objective_rotational_transform(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_rotational_transform_objective():
-        # Not supporting grid
         return desc.objectives.RotationalTransform(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -535,7 +504,7 @@ function jl_objective_rotational_transform(;
 end 
 
 
-function jl_objective_toroidal_current(;
+function ToroidalCurrent(;
     eq = nothing,  
     target = 0, 
     bounds = nothing, 
@@ -548,9 +517,7 @@ function jl_objective_toroidal_current(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_toroidal_current_objective():
-        # Not supporting grid
         return desc.objectives.ToroidalCurrent(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -560,9 +527,7 @@ function jl_objective_toroidal_current(;
 end 
 
 
-
-
-function jl_objective_volume(;
+function Volume(;
     eq = nothing,  
     target = 1, 
     bounds = nothing, 
@@ -575,9 +540,7 @@ function jl_objective_volume(;
     py"""
     import numpy as np
     import desc
-    # TODO: Grid
     def create_volume_objective():
-        # Not supporting grid
         return desc.objectives.Volume(
             eq=$eq, target=$target, bounds = $bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
@@ -585,3 +548,76 @@ function jl_objective_volume(;
     """
     output = py"create_volume_objective"()
 end 
+
+function objectives_load(
+    load_from;
+    file_format = nothing
+)    
+    py"""
+    import desc
+    def load():
+        return desc.objectives.GenericObjective.load(
+           $load_from, 
+           file_format = $file_format
+        )
+    """
+    output = py"load"()
+
+end 
+
+# function objectives_compute(
+#     args...; 
+#     kwargs...
+# )    
+#     kwargs_dict = Dict(pairs(kwargs))   
+
+#     py"""
+#     import numpy as np
+#     import desc
+#     def compute():
+#         return objective.compute(
+#             *args, 
+#             **kwargs_dict
+#         )
+#     """
+#     output = py"compute"()
+
+# end 
+
+# function objectives_compute_scalar(
+#     args...; 
+#     kwargs...
+# )    
+#     kwargs_dict = Dict(pairs(kwargs))   
+    
+#     py"""
+#     import numpy as np
+#     import desc
+#     def compute():
+#         return objective.compute_scalar(
+#             *args, 
+#             **kwargs_dict
+#         )
+#     """
+#     output = py"compute"()
+
+# end 
+
+# function objectives_compute_scaled(
+#     args...; 
+#     kwargs...
+# )    
+#     kwargs_dict = Dict(pairs(kwargs))   
+    
+#     py"""
+#     import numpy as np
+#     import desc
+#     def compute():
+#         return objective.compute_scaled(
+#             *args, 
+#             **kwargs_dict
+#         )
+#     """
+#     output = py"compute"()
+
+# end 

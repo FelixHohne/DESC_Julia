@@ -1,6 +1,6 @@
 using PyCall
 
-function jl_objective_fix_boundary_r(;
+function FixBoundaryR(;
     eq=nothing,
     target=nothing,
     bounds=nothing,
@@ -12,11 +12,6 @@ function jl_objective_fix_boundary_r(;
     name="lcfs R"
 )
 
-    # if typeof(modes) != Bool
-    #     println(typeof(modes))
-    #     modes = PyCall.PyReverseDims(modes)
-    # end 
-
     py"""
     import numpy as np
     import desc
@@ -26,15 +21,6 @@ function jl_objective_fix_boundary_r(;
         
         python_modes = $modes 
         python_modes = np.ascontiguousarray(python_modes)
-        print("Python modes now Contiguous:", python_modes.flags['C_CONTIGUOUS'])
-
-        # print("Modes code")
-        # print(type($modes))
-        # print($modes.dtype)
-        # print($modes.shape)
-        # print("Originally Contiguous:", $modes.flags['C_CONTIGUOUS'])
-        # print("Now: ", np.ascontiguousarray($modes).flags['C_CONTIGUOUS'])
-        # new_modes = np.ascontiguousarray($modes)
     else:
         python_modes = $modes
     def create_objective_fix_boundary_r():
@@ -54,7 +40,7 @@ function jl_objective_fix_boundary_r(;
 end 
 
 
-function jl_objective_fix_boundary_z(;
+function FixBoundaryZ(;
     eq = nothing, 
     target = nothing,  
     bounds = nothing, 
@@ -74,10 +60,7 @@ function jl_objective_fix_boundary_z(;
     if not isinstance($modes, bool):
         
         python_modes = $modes 
-        print("Python modes originally Contiguous:", python_modes.flags['C_CONTIGUOUS'])
         python_modes = np.ascontiguousarray(python_modes)
-        print("Python modes now Contiguous:", python_modes.flags['C_CONTIGUOUS'])
-
     else:
         python_modes = $modes
 
@@ -92,7 +75,7 @@ function jl_objective_fix_boundary_z(;
     output = py"create_objective_fix_boundary_z"()
 end 
 
-function jl_objective_fix_lambda_gauge(;
+function FixLambdaGauge(;
     eq = nothing, 
     target = 0,  
     bounds = nothing, 
@@ -117,7 +100,7 @@ function jl_objective_fix_lambda_gauge(;
 end 
 
 
-function jl_objective_fix_theta_sfl(;
+function FixThetaSfl(;
     eq=nothing, 
     target=0, 
     weight=1, 
@@ -135,7 +118,7 @@ function jl_objective_fix_theta_sfl(;
     output = py"create_objective_ix_theta_sfl"()
 end 
 
-function jl_objective_fix_axis_r(;
+function FixAxisR(;
     eq=nothing,
     target=nothing,
     weight=1,
@@ -161,7 +144,7 @@ function jl_objective_fix_axis_r(;
     output = py"create_objective_fix_axis_r"()
 end 
 
-function jl_objective_fix_pressure(;
+function FixPressure(;
     eq=nothing,
     target=nothing,
     bounds=nothing,
@@ -193,7 +176,7 @@ function jl_objective_fix_pressure(;
 end 
 
 
-function jl_objective_fix_current(;
+function FixCurrent(;
     eq=nothing,
     target=nothing,
     bounds=nothing,
@@ -225,7 +208,7 @@ function jl_objective_fix_current(;
 end 
 
 
-function jl_objective_fix_psi(;
+function FixPsi(;
     eq=nothing,
     target=nothing,
     bounds=nothing,
@@ -252,11 +235,7 @@ function jl_objective_fix_psi(;
     output = py"create_objective_fix_psi"()
 end 
 
-
-
-
-
-function jl_objective_fix_iota(;
+function FixIota(;
     eq=nothing,
     target=nothing,
     bounds=nothing,

@@ -1,6 +1,6 @@
 using PyCall 
 
-function jl_perturbations_get_deltas(
+function get_deltas(
     things1, 
     things2
 )
@@ -18,7 +18,7 @@ function jl_perturbations_get_deltas(
     output = py"get_deltas"()
 end 
 
-function jl_perturbations_perturb(
+function perturb(
     eq, 
     objective, 
     constraints, 
