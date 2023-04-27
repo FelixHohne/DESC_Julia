@@ -12,15 +12,6 @@ using PlasmaEquilibriumToolkit
 
 # Write your package code here.
 
-include("../install/install.jl")
-export desc_install;
-
-include("exports.jl")
-include("descTypes.jl")
-include("zernike.jl")
-include("descUtil.jl")
-include("descSurface.jl")
-include("descOutputs.jl")
 include("descOptimizers.jl")
 include("descEquilibrium.jl")
 include("descGrid.jl")
@@ -29,4 +20,11 @@ include("descObjectives.jl")
 include("descContinuation.jl")
 include("descLinearObjectives.jl")
 include("descUtils.jl")
+include("descBasis.jl")
+include("descProfiles.jl")
+include("descPlot.jl")
+include("descPerturbations.jl")
+include("descExamples.jl")
+include("descIO.jl")
+
 end

@@ -3,7 +3,7 @@ FULL_RUN = false
 
 @testset "extract R modes" begin 
   DESC.desc_jl_use_gpu_if_available()
-  surf = DESC.jl_fourierRZToroidalSurface(
+  surf = DESC.FourierRZToroidalSurface(
     R_lmn = [1, 0.125, 0.1],
     Z_lmn = [-0.125, -0.1],
     modes_R = [[0, 0], [1, 0], [0, 1]],
@@ -11,7 +11,7 @@ FULL_RUN = false
     NFP = 4
   )
 
-  eq = DESC.jl_equilibrium(
+  eq = DESC.Equilibrium(
       M = 8, 
       N = 8, 
       Psi=0.04, 
@@ -23,8 +23,8 @@ end
 @testset "Construct boolean R modes" begin 
   DESC.desc_jl_use_gpu_if_available()
   constraints = (
-      DESC.jl_objective_fix_boundary_r(), 
-      DESC.jl_objective_fix_boundary_z(), 
+      DESC.FixBoundaryR(), 
+      DESC.FixBoundaryZ(), 
     )
 end 
 
@@ -32,13 +32,13 @@ end
 
 @testset "saveEquilibrium" begin 
   DESC.desc_jl_use_gpu_if_available()
-  eq = DESC.jl_equilibrium()
-  DESC.jl_save_equilibrium(eq, "test_eq.hdf5")
+  eq = DESC.Equilibrium()
+  eq.save("test_eq.hdf5")
 end 
 
 @testset "loadEquilibrium" begin 
   DESC.desc_jl_use_gpu_if_available()
-  eq = DESC.jl_load_equilibrium("test_eq.hdf5", "hdf5")
+  eq = DESC.equilibrium_load("test_eq.hdf5", "hdf5")
 end 
 
 
@@ -51,17 +51,17 @@ end
   eq = desc.equilibrium.Equilibrium()
   eq_fam = desc.equilibrium.EquilibriaFamily(eq)
   """
-  eq = DESC.jl_equilibrium()
-  eq_fam = DESC.jl_equilibria_family(eq)
+  eq = DESC.Equilibrium()
+  eq_fam = DESC.EquilibriaFamily(eq)
 
-  eq2 = DESC.jl_equilibrium()
-  DESC.jl_equilibrium_family_append(eq_fam, eq2)
+  eq2 = DESC.Equilibrium()
+  DESC.equilibrium_family_append(eq_fam, eq2)
 
 end 
 
 @testset "construct Linear Grid" begin 
   DESC.desc_jl_use_gpu_if_available()
-  grid = DESC.jl_linear_grid(rho=[0.6, 0.8, 1.0], sym=true)
+  grid = DESC.LinearGrid(rho=[0.6, 0.8, 1.0], sym=true)
 
 end 
 
@@ -71,11 +71,10 @@ end
     py"""
     import numpy as np
     import desc
-    from desc import set_device
-    set_device('gpu')
+
     """
     
-    surf = DESC.jl_fourierRZToroidalSurface(
+    surf = DESC.FourierRZToroidalSurface(
       R_lmn = [1, 0.125, 0.1],
       Z_lmn = [-0.125, -0.1],
       modes_R = [[0, 0], [1, 0], [0, 1]],
@@ -83,15 +82,15 @@ end
       NFP = 4
     )
 
-    eq = DESC.jl_equilibrium(
+    eq = DESC.Equilibrium(
         M = 8, 
         N = 8, 
         Psi=0.04, 
         surface=surf
     )
 
-    eq = last(DESC.jl_solve_continuation_automatic(eq, objective = "force", verbose=3, bdry_step=0.5))
-    DESC.jl_save_equilibrium(eq, "QAS_output_continuation_automatic.hdf5")
+    eq = last(DESC.solve_continuation_automatic(eq, objective = "force", verbose=3, bdry_step=0.5))
+    eq.save("QAS_output_continuation_automatic.hdf5")
   end 
 end 
 
@@ -99,15 +98,15 @@ end
 @testset "QAS_output.h5" begin 
   if FULL_RUN 
     DESC.desc_jl_use_gpu_if_available()
-    eq = DESC.jl_load_equilibrium("QAS_output_continuation_automatic.hdf5", "hdf5")
+    eq = DESC.equilibrium_load("QAS_output_continuation_automatic.hdf5", "hdf5")
     println(eq)
-    eq_fam = DESC.jl_equilibria_family(eq)
-    grid = DESC.jl_linear_grid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
+    eq_fam = DESC.EquilibriaFamily(eq)
+    grid = DESC.LinearGrid(M=eq.M, N=eq.N, NFP=eq.NFP, rho=[0.6, 0.8, 1.0], sym=true)
 
       for n in 1:eq.M
-        objective = DESC.jl_objective_function(
-          (DESC.jl_objective_quasisymmetry_two_term(helicity = (1, eq.NFP), grid=grid, normalize=false),
-          DESC.jl_objective_aspect_ratio(target=8, weight=1e1, normalize=false)), 
+        objective = DESC.ObjectiveFunction(
+          (DESC.QuasisymmetryTwoTerm(helicity = (1, eq.NFP), grid=grid, normalize=false),
+          DESC.AspectRatio(target=8, weight=1e1, normalize=false)), 
           verbose = 0
         )
 
@@ -125,22 +124,22 @@ end
         Z_modes = eq.surface.Z_basis.modes[findall(>(n), max_Zabs), :]
 
         constraints = (
-          DESC.jl_objective_force_balance(), 
-          DESC.jl_objective_fix_boundary_r(modes=R_modes), 
-          DESC.jl_objective_fix_boundary_z(modes=Z_modes), 
-          DESC.jl_objective_fix_pressure(), 
-          DESC.jl_objective_fix_current(), 
-          DESC.jl_objective_fix_psi()
+          DESC.ForceBalance(), 
+          DESC.FixBoundaryR(modes=R_modes), 
+          DESC.FixBoundaryZ(modes=Z_modes), 
+          DESC.FixPressure(), 
+          DESC.FixCurrent(), 
+          DESC.FixPsi()
         )
 
         println("Constructed DESC constraints")
 
-        optimizer = DESC.jl_create_optimizer("lsq-exact")
+        optimizer = DESC.Optimizer("lsq-exact")
 
         println("Defined optimizer")
 
         println("Beginning equilibrium optimization")
-        eq_new, out = DESC.jl_optimize_equilibrium(
+        eq_new, out = DESC.equilibrium_optimize(
           last(eq_fam); 
           objective=objective, 
           constraints=constraints, 
@@ -154,10 +153,10 @@ end
             "solve_options" => Dict("verbose" => 0)
           )
         )
-        DESC.jl_equilibrium_family_append(eq_fam, eq_new)
+        DESC.equilibrium_family_append(eq_fam, eq_new)
         
     end 
 
-    DESC.jl_save_equilibrium_family(eq_fam, "qas_julia_test_results.hdf5")
+    eq_fam.save("qas_julia_test_results.hdf5")
   end 
 end 
