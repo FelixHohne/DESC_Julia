@@ -44,21 +44,70 @@ Note: currently requires CUDA 11. On Cornell’s G2 cluster, one can verify CUDA
 
 ### Example Program:
 ```
-DESC.desc_jl_use_gpu_if_available()
-surf = DESC.jl_fourierRZToroidalSurface(
-    R_lmn = [1, 0.125, 0.1],
-    Z_lmn = [-0.125, -0.1],
-    modes_R = [[0, 0], [1, 0], [0, 1]],
-    modes_Z = [[-1, 0], [0, -1]],
-    NFP = 4
- )
+DESC.use_gpu_if_available();
+surface = DESC.FourierRZToroidalSurface(
+        R_lmn=[10, 1],
+        modes_R=[[0, 0], [1, 0]], 
+        Z_lmn=[0, -1],
+        modes_Z=[[0, 0], [-1, 0]],
+);
 
-eq = DESC.jl_equilibrium(
-        M = 8, 
-        N = 8, 
-        Psi=0.04, 
-        surface=surf
-)
+knots = LinRange(0, 1, 20);
+pressure_values = zeros(20);
+iota_values = 1 .+ 1.5 * (knots.^2);
+
+pressure = DESC.SplineProfile(
+	values = pressure_values, knots = knots
+);
+
+iota = DESC.SplineProfile(
+	values = iota_values, 
+	knots = knots
+);
+
+julia_iota = convert(Array{Float64}, iota.params);
+
+
+eq = DESC.Equilibrium(
+    surface=surface,
+    pressure=pressure,
+    iota=iota,
+    Psi=1.0,  
+    NFP=1,  
+    L=6,  
+    M=6,  
+    N=0, 
+    L_grid=12,  
+    M_grid=9, 
+    N_grid=0,  
+    sym=true
+);
+
+optimizer = DESC.Optimizer("lsq-exact");
+
+constraints = (
+        DESC.FixBoundaryR(), 
+        DESC.FixBoundaryZ(), 
+        DESC.FixPressure(), 
+        DESC.FixIota(), 
+        DESC.FixPsi()
+);
+
+objectives = DESC.ForceBalance();
+
+obj = DESC.ObjectiveFunction(objectives);
+
+eq.solve(
+    verbose=2, ftol=1e-8, objective=obj, optimizer=optimizer, constraints=constraints
+);
+
+plot = DESC.plot_section(
+  eq, 
+  "|F|", 
+  norm_F=true, log=true,
+  figsize=(12, 12), title_font_size = 25,
+  xlabel_fontsize = 20, ylabel_fontsize = 20, 
+);
 
 DESC.jl_solve_continuation_automatic(eq, objective = "force", verbose=3, bdry_step=0.5)
 ```
