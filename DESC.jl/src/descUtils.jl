@@ -1,5 +1,5 @@
 using PyCall
-function desc_jl_use_gpu_if_available()
+function use_gpu_if_available()
     py"""
     def use_gpu():
         import jax 

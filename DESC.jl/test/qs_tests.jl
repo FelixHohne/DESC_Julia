@@ -2,7 +2,7 @@ using PyCall
 FULL_RUN = false
 
 @testset "extract R modes" begin 
-  DESC.desc_jl_use_gpu_if_available()
+  DESC.use_gpu_if_available()
   surf = DESC.FourierRZToroidalSurface(
     R_lmn = [1, 0.125, 0.1],
     Z_lmn = [-0.125, -0.1],
@@ -21,7 +21,7 @@ FULL_RUN = false
 end 
 
 @testset "Construct boolean R modes" begin 
-  DESC.desc_jl_use_gpu_if_available()
+  DESC.use_gpu_if_available()
   constraints = (
       DESC.FixBoundaryR(), 
       DESC.FixBoundaryZ(), 
@@ -31,19 +31,19 @@ end
 
 
 @testset "saveEquilibrium" begin 
-  DESC.desc_jl_use_gpu_if_available()
+  DESC.use_gpu_if_available()
   eq = DESC.Equilibrium()
   eq.save("test_eq.hdf5")
 end 
 
 @testset "loadEquilibrium" begin 
-  DESC.desc_jl_use_gpu_if_available()
+  DESC.use_gpu_if_available()
   eq = DESC.equilibrium_load("test_eq.hdf5", "hdf5")
 end 
 
 
 @testset "constructEqFamily" begin 
-  DESC.desc_jl_use_gpu_if_available()
+  DESC.use_gpu_if_available()
   py"""
   import desc 
   import desc.equilibrium 
@@ -60,13 +60,13 @@ end
 end 
 
 @testset "construct Linear Grid" begin 
-  DESC.desc_jl_use_gpu_if_available()
+  DESC.use_gpu_if_available()
   grid = DESC.LinearGrid(rho=[0.6, 0.8, 1.0], sym=true)
 
 end 
 
 @testset "set eq for QAS_output.h5" begin 
-  DESC.desc_jl_use_gpu_if_available()
+  DESC.use_gpu_if_available()
   if FULL_RUN 
     py"""
     import numpy as np
@@ -97,7 +97,7 @@ end
 
 @testset "QAS_output.h5" begin 
   if FULL_RUN 
-    DESC.desc_jl_use_gpu_if_available()
+    DESC.use_gpu_if_available()
     eq = DESC.equilibrium_load("QAS_output_continuation_automatic.hdf5", "hdf5")
     println(eq)
     eq_fam = DESC.EquilibriaFamily(eq)

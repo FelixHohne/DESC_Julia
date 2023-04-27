@@ -1,5 +1,5 @@
 @testset "DESC Interactive example" begin 
-    DESC.desc_jl_use_gpu_if_available()
+    DESC.use_gpu_if_available()
     surface = DESC.FourierRZToroidalSurface(
         R_lmn=[10, 1],
         modes_R=[[0, 0], [1, 0]],  # modes given as [m,n] for each coefficient

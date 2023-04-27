@@ -1,7 +1,7 @@
 PLOTTING = false 
 @testset "extract R modes" begin 
 
-  DESC.desc_jl_use_gpu_if_available()
+  DESC.use_gpu_if_available()
 
   surface = DESC.FourierRZToroidalSurface(
     R_lmn = [10, 1],
@@ -60,10 +60,7 @@ PLOTTING = false
     verbose=2, ftol=1e-8, objective=obj, optimizer=optimizer, constraints=constraints
   )
 
-    DESC.plot_surfaces(
-      eq, 
-      output_plots = false
-    )
+    
 
     DESC.plot_section(
       eq, 
