@@ -51,7 +51,6 @@ function optimize_optimize(
     else:
         new_x_scale = $x_scale
 
-
     def execute_optimize_command():
         $optimizer.optimize(
             $eq, 

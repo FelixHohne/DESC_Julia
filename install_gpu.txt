@@ -1,6 +1,0 @@
-Cloned DESC from GitHub should have no jax requirements
-Do both from the DESC directory
-pip install jax==0.3.24 jaxlib==0.3.24+cuda11.cudnn805 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-pip install -e .
-
-

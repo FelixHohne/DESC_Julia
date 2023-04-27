@@ -140,15 +140,12 @@ function jl_save_equilibrium(eq, file_name; file_format = "hdf5")
     py"""
     import numpy as np
     import desc
-
     import desc.equilibrium
     def save_eq():
         $eq.save($file_name, $file_format) 
     """
     py"save_eq"()
 end 
-
-
 
 
 function equilibrium_family_append(eq_fam, eq) 

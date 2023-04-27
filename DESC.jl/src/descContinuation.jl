@@ -53,7 +53,6 @@ function solve_continuation_automatic(
     import numpy as np
     import desc
     import desc.continuation 
-    
 
     def create_solve_continuation_automatic():
         return desc.continuation.solve_continuation_automatic(
