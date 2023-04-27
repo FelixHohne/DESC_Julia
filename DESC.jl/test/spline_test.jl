@@ -41,9 +41,7 @@ PLOTTING = false
     sym=true,  # explicitly enforce stellarator symmetry
   )
 
-  if PLOTTING
-    DESC.plot_section(eq, "|F|", norm_F = true, log=true)
-  end 
+    DESC.plot_section(eq, "|F|", norm_F = true, log=true, output_plots = false)
 
   optimizer = DESC.Optimizer("lsq-exact")
   constraints = (
@@ -62,18 +60,17 @@ PLOTTING = false
     verbose=2, ftol=1e-8, objective=obj, optimizer=optimizer, constraints=constraints
   )
 
-  if PLOTTING
     DESC.plot_surfaces(
-      eq
+      eq, 
+      output_plots = false
     )
 
     DESC.plot_section(
       eq, 
       "|F|", 
-      norm_F=true, log=true
+      norm_F=true, log=true, output_plots = false
     )
-    DESC.plot_1d(eq, "p");
-  end 
+    DESC.plot_1d(eq, "p", output_plots = false);
 
   delta_p = zeros(Int, size(eq.p_l))
   p_values = 1000 * (1 .- eq.pressure._knots .^2)
@@ -85,12 +82,8 @@ PLOTTING = false
     order = 2
   )
 
-  # TODO: FIX
-  # @test isapprox(eq1.pressure.params, 1000 * (1 .- eq.pressure._knots .^ 2))
 
-  if PLOTTING 
-    DESC.plot_section(eq1, "|F|", norm_F=true, log=true);
-  end 
+    DESC.plot_section(eq1, "|F|", norm_F=true, log=true, output_plots = false);
   
   constraints = (
     DESC.FixBoundaryR(), 
@@ -103,7 +96,7 @@ PLOTTING = false
   objective = DESC.ForceBalance()
   obj = DESC.ObjectiveFunction(objectives=objectives)
   eq.solve(verbose=2, ftol = 1e-4, optimizer=optimizer, constraints=constraints, objective=obj)
-  DESC.plot_section(eq1, "|F|", norm_F=true, log=true)
+  DESC.plot_section(eq1, "|F|", norm_F=true, log=true, output_plots = false)
 
 
 #   println("Pressure values at these knots:\n", pressure.params)

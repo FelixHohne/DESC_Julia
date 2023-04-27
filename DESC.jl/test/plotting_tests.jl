@@ -23,10 +23,12 @@
         M_grid=12,  
         N_grid=0, 
         sym=true,  
+        output_plots = false
     )
     DESC.plot_3d(
         eq, 
-        "|F|"
+        "|F|", 
+        output_plots = false
     )
 
     DESC.plot_surfaces(
@@ -35,10 +37,12 @@
         title_font_size = 32,
         xlabel_fontsize = 20, 
         ylabel_fontsize = 20, 
-        return_data = true
+        return_data = true, 
+        output_plots = false
     )
 
     DESC.plot_boozer_surface(
-        eq
+        eq, 
+        output_plots = false
     )
 end 

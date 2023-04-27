@@ -7,6 +7,7 @@ function plot_1d(
     log = false, 
     ax = nothing,  
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -28,8 +29,11 @@ function plot_1d(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
@@ -41,6 +45,7 @@ function plot_2d(
     norm_F = false,
     ax = nothing,  
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -63,18 +68,22 @@ function plot_2d(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 function plot_3d(
     eq, 
-    name, 
+    name;
     grid = nothing, 
     log = false, 
     all_field_periods = true, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -97,14 +106,18 @@ function plot_3d(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
 function plot_basis(
     basis; 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -122,8 +135,11 @@ function plot_basis(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
@@ -137,6 +153,7 @@ function plot_boozer_modes(
     rho = nothing, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -160,8 +177,11 @@ function plot_boozer_modes(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
@@ -174,6 +194,7 @@ function plot_boozer_surface(
     ncontours = 100, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -196,8 +217,11 @@ function plot_boozer_surface(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
@@ -207,6 +231,7 @@ function plot_boundaries(
     zeta = nothing, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -227,8 +252,11 @@ function plot_boundaries(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
@@ -238,6 +266,7 @@ function plot_boundary(
     plot_axis = false, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -258,8 +287,11 @@ function plot_boundary(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 function plot_coefficients(
@@ -268,6 +300,7 @@ function plot_coefficients(
     M = true, 
     N = true, 
     ax = nothing, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -288,11 +321,12 @@ function plot_coefficients(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
-
-
 
 
 function plot_coils(
@@ -300,6 +334,7 @@ function plot_coils(
     grid = nothing, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -319,8 +354,11 @@ function plot_coils(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
@@ -337,6 +375,7 @@ function plot_comparison(
     linestyles = nothing, 
     labels = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -363,8 +402,11 @@ function plot_comparison(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 function plot_field_lines_sfl(
@@ -376,6 +418,7 @@ function plot_field_lines_sfl(
     dphi = 0.01, 
     ax = nothing, 
     return_data = nothing, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -399,14 +442,17 @@ function plot_field_lines_sfl(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
 function plot_fsa(
     eq, 
-    name, 
+    name;
     wirth_sqrt_g = true, 
     log = false, 
     rho = 20, 
@@ -415,6 +461,7 @@ function plot_fsa(
     norm_f = false, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -440,8 +487,11 @@ function plot_fsa(
             )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
@@ -449,6 +499,7 @@ end
 function plot_grid(
     grid;
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -466,8 +517,11 @@ function plot_grid(
         )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 
@@ -482,6 +536,7 @@ function plot_qs_error(
     rho = nothing, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
 
@@ -508,8 +563,11 @@ def plot():
 """
 
 output = py"plot"()
-plt = pyimport("matplotlib.pyplot")
-plt.show()
+if output_plots
+    plt = pyimport("matplotlib.pyplot")
+    plt.show()
+end 
+return output
 
 end 
 
@@ -517,6 +575,7 @@ end
 
 function plot_logo(;
     savepath = nothing, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -533,8 +592,11 @@ function plot_logo(;
         )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 end 
 
 function plot_section(
@@ -545,6 +607,7 @@ function plot_section(
     norm_F = false, 
     ax = nothing, 
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
     kwargs_dict = Dict(pairs(kwargs))
@@ -567,8 +630,11 @@ function plot_section(
         )
     """
     output = py"plot"()
-    plt = pyimport("matplotlib.pyplot")
-    plt.show()
+    if output_plots
+        plt = pyimport("matplotlib.pyplot")
+        plt.show()
+    end 
+    return output
 
 end 
 
@@ -580,6 +646,7 @@ function plot_surfaces(
     zeta = nothing, 
     ax = nothing,
     return_data = false, 
+    output_plots = true, 
     kwargs...
 )
 
@@ -602,6 +669,9 @@ def plot_surface():
     )
 """
 output = py"plot_surface"()
-plt = pyimport("matplotlib.pyplot")
-plt.show()
+if output_plots
+    plt = pyimport("matplotlib.pyplot")
+    plt.show()
+end 
+return output
 end 

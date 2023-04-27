@@ -9,7 +9,6 @@ eq = DESC.Equilibrium(Psi=1.0, NFP = 100, L_grid =1, M_grid = 2, axis = [0 10 3]
 eq = DESC.Equilibrium(Psi=1.0, NFP = 100, L_grid =1, M_grid = 2, axis = [0 10 3], pressure = [0 10; 2 5], iota = [0 1; 2 3], surface = [0 0 0 10 0; 1 1 0 1 1])
 end 
 
-plotting = false 
 saving = false
 @testset "Near Axis Eq Test" begin 
     qsc_eq = DESC.qsc_from_paper("precise QA")
@@ -41,15 +40,14 @@ saving = false
         desc_eq.save("DESC_from_NAE_precise_QA_output.h5")
     end 
 
-    if plotting 
-        DESC.plot_comparison(
-            [desc_eq, eq_fit], 
-            labels=["DESC-solved equilibrium", "NAE surfaces"],
-            figsize = (12, 12), 
-            theta = 0, 
-            colors = ["k", "r"], 
-            linestyles = ["-", ":"], 
-            lws = [1, 2],
-        )
-    end 
+    DESC.plot_comparison(
+        [desc_eq, eq_fit], 
+        labels=["DESC-solved equilibrium", "NAE surfaces"],
+        figsize = (12, 12), 
+        theta = 0, 
+        colors = ["k", "r"], 
+        linestyles = ["-", ":"], 
+        lws = [1, 2],
+        output_plots = false
+    )
 end 

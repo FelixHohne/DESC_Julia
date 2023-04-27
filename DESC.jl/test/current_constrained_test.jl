@@ -23,10 +23,10 @@
     objective=objective, constraints=constraints, optimizer=optimizer, verbose=3
     )
 
-    DESC.plot_1d(eq, "current")
-    DESC.plot_section(eq, "|F|", norm_F=true, log=true);
-    DESC.plot_1d(eq, "p")
-    DESC.plot_1d(eq, "iota")
+    DESC.plot_1d(eq, "current", output_plots = false)
+    DESC.plot_section(eq, "|F|", norm_F=true, log=true, output_plots = false);
+    DESC.plot_1d(eq, "p", output_plots = false)
+    DESC.plot_1d(eq, "iota", output_plots = false)
 
     surface_3D = DESC.FourierRZToroidalSurface(
         R_lmn=[10, -1, -0.3, 0.3],  
