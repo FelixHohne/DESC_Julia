@@ -109,5 +109,4 @@ plot = DESC.plot_section(
   xlabel_fontsize = 20, ylabel_fontsize = 20, 
 );
 
-DESC.jl_solve_continuation_automatic(eq, objective = "force", verbose=3, bdry_step=0.5)
 ```
