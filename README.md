@@ -2,6 +2,7 @@
 
 This is a PyCall-based Julia wrapper, with GPU acceleration, for the [DESC library](https://github.com/PlasmaControl/DESC). 
 
+
 ### Nvidia GPU Installation Instructions
 
 Note: these instructions assume CUDA 11. On Cornell’s G2 cluster, one can verify CUDA 11 is present via (`cd /usr/local/` and checking cuda-11.2 is present). 
@@ -52,11 +53,12 @@ The library contains initialization functions in Julia for DESC objects, which u
 
 Through PyCall, methods on DESC objects can be applied directly. Additional Julia functions are provided for class method functions, as well as methods which utilize numpy arrays. PyCall does not normally convert arrays to C contiguous style, leading to possible errors in the underlying DESC Python code. 
 
-For example, Equilibrium perturb functionality is provided as a method call on a DESC Equilibrium object, i.e. eq.perturb(...). If `julia_eq` is a Equilibrium object constructed by this library, then likewise, one can call `julia_eq`.perturb(...) passing in Julia objects. However, if numpy arrays are passed into `julia_eq`, these may result in errors. As such, `descEquilibrium.equilibrium_perturb(julia_eq, ...)` provides similar functionality, where the arguments to this function are wrapped in conversations. 
+For example, Equilibrium perturb functionality is provided as a method call on a DESC Equilibrium object, i.e. eq.perturb(...). If `julia_eq` is a Equilibrium object constructed by this library, then likewise, one can call `julia_eq.perturb(...)` passing in Julia objects. However, if numpy arrays are passed into `julia_eq`, these may result in errors. As such, `descEquilibrium.equilibrium_perturb(julia_eq, ...)` provides similar functionality, where the arguments to this function are wrapped. 
 
 ### Example Program:
 ```
-DESC.use_gpu_if_available();
+DESC.use_gpu_if_available(); # Checks if GPU is available using JAX, defaults to CPU is not available. 
+# Default arguments match Python DESC; thus, only need to pass in arguments that are non-default. 
 surface = DESC.FourierRZToroidalSurface(
         R_lmn=[10, 1],
         modes_R=[[0, 0], [1, 0]], 
@@ -77,8 +79,8 @@ iota = DESC.SplineProfile(
 	knots = knots
 );
 
+# Example of how to return proper Julia objects from DESC_Julia
 julia_iota = convert(Array{Float64}, iota.params);
-
 
 eq = DESC.Equilibrium(
     surface=surface,
