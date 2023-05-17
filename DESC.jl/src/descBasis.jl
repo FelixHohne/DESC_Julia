@@ -1,5 +1,9 @@
 using PyCall 
 
+#=
+Functions implementing desc.basis API
+=#
+
 function PowerSeries(
     L;
     sym = "even", 

@@ -26,5 +26,6 @@ include("descPlot.jl")
 include("descPerturbations.jl")
 include("descExamples.jl")
 include("descIO.jl")
+include("descVMEC.jl")
 
 end

@@ -1,5 +1,10 @@
 using PyCall 
 
+
+#=
+Functions implement desc.perturbations API
+=#
+
 function plot_1d(
     eq, 
     name;

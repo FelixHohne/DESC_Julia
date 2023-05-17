@@ -1,5 +1,9 @@
 using PyCall 
 
+
+#=
+Functions implement desc.perturbations API
+=#
 function get_deltas(
     things1, 
     things2

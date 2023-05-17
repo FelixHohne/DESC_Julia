@@ -29,7 +29,7 @@ function AspectRatio(;
     output = py"create_objective_aspect_ratio"()
 end 
 
-function BootstrapRedlConsistency(
+function BootstrapRedlConsistency(;
     eq = nothing, 
     target = 0, 
     bounds = nothing, 
@@ -43,18 +43,19 @@ function BootstrapRedlConsistency(
     py"""
     import numpy as np 
     import desc 
+    import desc.objectives 
     def createBootstrapRedlConsistency():
         return desc.objectives.BootstrapRedlConsistency(
-            eq=$equilibrium, target=$target, bounds=$bounds, weight=$weight, 
+            eq=$eq, target=$target, bounds=$bounds, weight=$weight, 
             normalize=$normalize, normalize_target=$normalize_target, 
             grid=$grid, helicity=$helicity, name=$name
         )
-    output = py"createBootstrapRedlConsistency"()
     """
+    output = py"createBootstrapRedlConsistency"()
 end 
 
 
-function CurrentDensity(
+function CurrentDensity(;
     equilibrium = nothing, 
     target = 0, 
     bounds = nothing, 
@@ -76,7 +77,7 @@ function CurrentDensity(
 end 
 
 
-function Elongation(
+function Elongation(;
     equilibrium = nothing, 
     target = 1, 
     bounds = nothing, 

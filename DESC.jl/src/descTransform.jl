@@ -1,5 +1,9 @@
 using PyCall 
 
+#=
+Functions implement desc.transform API
+=#
+
 function Transform(
     grid, 
     basis;

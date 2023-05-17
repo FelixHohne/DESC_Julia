@@ -34,6 +34,10 @@ function solve_continuation(
 
 end 
 
+#=
+Functions implement desc.continuation API
+=#
+
 function solve_continuation_automatic(
     eq;
     objective = "force", 

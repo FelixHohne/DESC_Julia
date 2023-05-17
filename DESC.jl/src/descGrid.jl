@@ -1,6 +1,8 @@
 using PyCall
 
-
+#=
+Functions implement desc.grid API
+=#
 function Grid(
     nodes;
     sort = true

@@ -1,5 +1,9 @@
 using PyCall
 
+#=
+Functions implement desc.equilibrium API
+=#
+
 function Equilibrium(;
     Psi=1.0,
     NFP=nothing,

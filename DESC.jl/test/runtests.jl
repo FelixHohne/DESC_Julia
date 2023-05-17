@@ -3,7 +3,7 @@ using DESC
 using Test
 using PyCall
 
-
+include("objective_test.jl")
 include("spline_test.jl")
 include("plotting_tests.jl")
 include("interactive_tests.jl")

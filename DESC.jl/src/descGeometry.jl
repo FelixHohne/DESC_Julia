@@ -1,6 +1,9 @@
 using PyCall 
 
 
+#=
+Functions implement desc.geometry API
+=#
 function FourierRZCurve(;
     R_n = 10, 
     Z_n = 0, 

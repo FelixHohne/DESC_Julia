@@ -1,5 +1,9 @@
 using PyCall 
 
+#=
+Functions implement desc.profiles API
+=#
+
 function PowerSeriesProfile(;
     params = [0], 
     modes = nothing, 

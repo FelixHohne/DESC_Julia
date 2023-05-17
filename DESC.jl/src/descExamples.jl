@@ -1,5 +1,8 @@
 using PyCall 
 
+#=
+Functions implement desc.examples API
+=#
 function examples_get(name; data = nothing) 
     py"""
     import desc
