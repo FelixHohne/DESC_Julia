@@ -1,7 +1,6 @@
 # DESC_Julia
 
-This is a PyCall-based Julia wrapper, with GPU acceleration, for the [DESC library](https://github.com/PlasmaControl/DESC). 
-
+This is a PyCall-based Julia wrapper, with GPU acceleration, for the [DESC library](https://github.com/PlasmaControl/DESC). It supports the API as provided by the API Documentation, available [here](https://desc-docs.readthedocs.io/en/stable/api.html).  
 
 ### Nvidia GPU Installation Instructions
 

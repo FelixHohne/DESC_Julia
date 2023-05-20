@@ -154,7 +154,7 @@ function plot_boozer_modes(
     log = true, 
     B0 = true, 
     norm = false, 
-    num_modes = 10, 
+    num_nodes = 10, 
     rho = nothing, 
     ax = nothing, 
     return_data = false, 
@@ -248,7 +248,7 @@ function plot_boundaries(
 
     def plot():
         return desc.plotting.plot_boundaries(
-            eqs; 
+            $eqs, 
             labels = $labels, 
             zeta = $zeta, 
             ax = $ax, 
@@ -283,7 +283,7 @@ function plot_boundary(
 
     def plot():
         return desc.plotting.plot_boundary(
-            eq; 
+            $eq, 
             zeta = $zeta, 
             plot_axis = $plot_axis, 
             ax = $ax, 
@@ -317,7 +317,7 @@ function plot_coefficients(
 
     def plot():
         return desc.plotting.plot_coefficients(
-            eq = $eq; 
+            $eq,  
             L = $L, 
             M = $M, 
             N = $N, 
@@ -435,8 +435,8 @@ function plot_field_lines_sfl(
 
     def plot():
         return desc.plotting.plot_field_lines_sfl(
-            eq = $eq, 
-            rho = $rho;
+            $eq, 
+            rho = $rho, 
             seed_thetas = $seed_thetas, 
             phi_start = $phi_start, 
             phi_end = $phi_end, 
@@ -458,12 +458,12 @@ end
 function plot_fsa(
     eq, 
     name;
-    wirth_sqrt_g = true, 
+    with_sqrt_g = true, 
     log = false, 
     rho = 20, 
     M = nothing, 
     N = nothing, 
-    norm_f = false, 
+    norm_F = false, 
     ax = nothing, 
     return_data = false, 
     output_plots = true, 
@@ -480,12 +480,12 @@ function plot_fsa(
         return desc.plotting.plot_fsa(
             eq = $eq, 
             name = $name, 
-            wirth_sqrt_g = $wirth_sqrt_g, 
+            with_sqrt_g = $with_sqrt_g, 
             log = $log, 
             rho = $rho, 
             M = $M, 
             N = $N, 
-            norm_f = $norm_f, 
+            norm_F = $norm_F, 
             ax = $ax, 
             return_data = $return_data, 
             **$kwargs_dict
@@ -516,7 +516,7 @@ function plot_grid(
 
     def plot():
         return desc.plotting.plot_grid(
-            grid$grid, 
+            $grid, 
             return_data = $return_data, 
             **$kwargs_dict
         )
@@ -554,7 +554,7 @@ import numpy as np
 
 def plot():
     return desc.plotting.plot_qs_error(
-        eq; 
+        $eq, 
         log=$log, 
         fB = $fB, 
         fC = $fC, 
