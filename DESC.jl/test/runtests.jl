@@ -3,6 +3,8 @@ using DESC
 using Test
 using PyCall
 
+include("profile_tests.jl")
+include("grid_test.jl")
 include("geometry_test.jl")
 include("basis_test.jl")
 include("plotting_tests.jl")

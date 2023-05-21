@@ -20,8 +20,8 @@ function FourierRZCurve(;
     import numpy as np  
 
     if isinstance($R_n, np.ndarray):
-            new_R_n = np.ascontiguousarray($R_n)
-            assert new_R_n.flags['C_CONTIGUOUS']
+        new_R_n = np.ascontiguousarray($R_n)
+        assert new_R_n.flags['C_CONTIGUOUS']
     else:
         new_R_n = $R_n
     
@@ -71,8 +71,8 @@ function FourierXYZCurve(;
     import numpy as np  
 
     if isinstance($X_n, np.ndarray):
-                new_X_n = np.ascontiguousarray($X_n)
-                assert new_X_n.flags['C_CONTIGUOUS']
+        new_X_n = np.ascontiguousarray($X_n)
+        assert new_X_n.flags['C_CONTIGUOUS']
     else:
         new_X_n = $X_n
 

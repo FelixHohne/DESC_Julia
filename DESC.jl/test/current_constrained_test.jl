@@ -42,8 +42,4 @@
     objective = DESC.ObjectiveFunction(objectives=(DESC.ForceBalance()))
     constraints = DESC.get_fixed_boundary_constraints(profiles=true, iota=false)
 
-
-
-
-
 end 

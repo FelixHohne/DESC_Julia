@@ -145,9 +145,9 @@ function FourierZernikeProfile(;
     output = py"create_FourierZernike_profile"()
 end 
 
-function ScaledProfile(;    
-    profile, 
-    scale
+function ScaledProfile( 
+    scale,
+    profile
 ) 
     py"""
     import desc 
@@ -163,8 +163,8 @@ function ScaledProfile(;
     output = py"create_scaled_profile"()
 end 
 
-function SumProfile(;    
-    profiles
+function SumProfile(   
+    profiles...
 ) 
     py"""
     import desc 
@@ -173,14 +173,14 @@ function SumProfile(;
 
     def create_sum_profile():
         return desc.profiles.SumProfile(
-            profiles = $profiles
+            *$profiles
         )
     """
     output = py"create_sum_profile"()
 end 
 
-function ProductProfile(;    
-    profiles
+function ProductProfile(    
+    profiles...
 ) 
     py"""
     import desc 
@@ -189,7 +189,7 @@ function ProductProfile(;
 
     def create_product_profile():
         return desc.profiles.ProductProfile(
-            profiles = $profiles
+            *$profiles
         )
     """
     output = py"create_product_profile"()
