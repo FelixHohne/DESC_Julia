@@ -1,11 +1,37 @@
 @testset "Basis Construction Test" begin 
-    DESC.PowerSeries(1, sym="even")
-    DESC.FourierSeries(10, NFP=12, sym="cos")
-    DESC.DoubleFourierSeries(10, 9)
-    DESC.DoubleFourierSeries(1, 1, NFP=123, sym=false)
-    DESC.ZernikePolynomial(10, 1, sym="cos", spectral_indexing="ansi")
-    DESC.ZernikePolynomial(-1, 1,  sym="cos", spectral_indexing="ansi")
-    DESC.FourierZernikeBasis(1, 2, 3, sym=false, spectral_indexing="ansi")
+
+    obj = DESC.PowerSeries(1, sym="even")
+    obj_rep = string(obj)
+    @assert occursin("PowerSeries", obj_rep)
+
+    obj = DESC.FourierSeries(10, NFP=12, sym="cos")
+    obj_rep = string(obj)
+    @assert occursin("FourierSeries", obj_rep)
+
+
+    obj = DESC.DoubleFourierSeries(10, 9)
+    obj_rep = string(obj)
+    @assert occursin("DoubleFourierSeries", obj_rep)
+
+    obj =  DESC.DoubleFourierSeries(1, 1, NFP=123, sym=false)
+    obj_rep = string(obj)
+    @assert occursin("DoubleFourierSeries", obj_rep)
+
+    obj = DESC.ZernikePolynomial(10, 1, sym="cos", spectral_indexing="ansi")
+    obj_rep = string(obj)
+    @assert occursin("ZernikePolynomial", obj_rep)
+
+   
+    obj = DESC.ZernikePolynomial(-1, 1,  sym="cos", spectral_indexing="ansi")
+    obj_rep = string(obj)
+    @assert occursin("ZernikePolynomial", obj_rep)
+
+    obj = DESC.FourierZernikeBasis(1, 2, 3, sym=false, spectral_indexing="ansi")
+    obj_rep = string(obj)
+    @assert occursin("FourierZernikeBasis", obj_rep)
+
+    
+    
 end 
 
 @testset "Basis Operations Test" begin 

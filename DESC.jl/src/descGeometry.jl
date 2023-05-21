@@ -45,13 +45,9 @@ function FourierRZCurve(;
 
     def create_fourier_rz_curve():
         eq = desc.geometry.FourierRZCurve(
-            R_n = new_R_n, 
-            Z_n = new_Z_n, 
-            modes_R = new_modes_R, 
-            modes_Z = new_modes_Z, 
             NFP = $NFP, 
             sym = $sym, 
-            grid = $Grid, 
+            grid = $grid, 
             name = $name
         )
 
@@ -60,7 +56,7 @@ function FourierRZCurve(;
     output = py"create_fourier_rz_curve"()
 end 
 
-function FourierXYZCurve(
+function FourierXYZCurve(;
     X_n = [0, 10, 2], 
     Y_n = [0, 0, 0], 
     Z_n = [-2, 0, 0], 
@@ -82,7 +78,7 @@ function FourierXYZCurve(
 
     if isinstance($Y_n, np.ndarray):
         new_Y_n = np.ascontiguousarray($Y_n)
-        assert Y_n.flags['C_CONTIGUOUS']
+        assert new_Y_n.flags['C_CONTIGUOUS']
     else:
         new_Y_n = $Y_n
 
@@ -128,14 +124,14 @@ function FourierPlanarCurve(
     import numpy as np  
 
     if isinstance($center, np.ndarray):
-                    new_center = np.ascontiguousarray($center)
-                    assert new_center.flags['C_CONTIGUOUS']
+        new_center = np.ascontiguousarray($center)
+        assert new_center.flags['C_CONTIGUOUS']
     else:
         new_center = $center
 
     if isinstance($normal, np.ndarray):
         new_normal = np.ascontiguousarray($normal)
-        assert normal.flags['C_CONTIGUOUS']
+        assert new_normal.flags['C_CONTIGUOUS']
     else:
         new_normal = $normal
 
@@ -224,7 +220,7 @@ function FourierRZToroidalSurface(;
     output = py"create_fourier_rz_toroidal_surface"()
 end 
 
-function ZernikeRZToroidalSection(
+function ZernikeRZToroidalSection(;
     R_lmn = nothing, 
     Z_lmn = nothing, 
     modes_R = nothing, 
@@ -237,10 +233,10 @@ function ZernikeRZToroidalSection(
     check_orientation = true
 )
 
-py"""
-import desc 
-import desc.geometry
-import numpy as np  
+    py"""
+    import desc 
+    import desc.geometry
+    import numpy as np  
 
     if isinstance($R_lmn, np.ndarray):
         n_R_lmn = np.ascontiguousarray($R_lmn)
