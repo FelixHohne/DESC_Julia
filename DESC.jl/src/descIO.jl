@@ -10,6 +10,7 @@ function InputReader(;
     py"""
     import numpy as np
     import desc
+    import desc.io
 
     def input_reader():
         return desc.io.InputReader(
@@ -28,6 +29,7 @@ function io_parse_vmec_inputs(
 py"""
 import numpy as np
 import desc
+import desc.io
 
 def parse_vmec_inputs():
     return desc.io.parse_vmec_inputs(
@@ -46,6 +48,7 @@ function io_vmec_to_desc_input(
 py"""
 import numpy as np
 import desc
+import desc.io
 
 def vmec_to_desc_input():
     return desc.io.vmec_to_desc_input(
@@ -66,6 +69,7 @@ function io_write_desc_input(
 py"""
 import numpy as np
 import desc
+import desc.io
 
 def write_desc_input():
     return desc.io.write_desc_input(

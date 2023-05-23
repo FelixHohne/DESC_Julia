@@ -6,6 +6,7 @@ Functions implement desc.examples API
 function examples_get(name; data = nothing) 
     py"""
     import desc
+    import desc.examples
     def get():
         return desc.examples.get(
             $name, 
@@ -19,6 +20,7 @@ end
 function examples_listall() 
     py"""
     import desc
+    import desc.examples
     def listall():
         return desc.examples.listall()
     """

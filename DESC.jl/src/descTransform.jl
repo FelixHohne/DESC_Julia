@@ -16,6 +16,7 @@ function Transform(
     py"""
     import desc 
     import numpy as np  
+    import desc.transform
 
     if isinstance($derivs, np.ndarray):
         new_derivs = np.ascontiguousarray($derivs)
@@ -25,8 +26,8 @@ function Transform(
 
     def transform():
         return desc.transform.Transform(
-        grid = $grid, 
-        basis = $basis, 
+        $grid, 
+        $basis, 
         derivs = new_derivs, 
         rcond = $rcond, 
         build = $build, 
@@ -45,7 +46,7 @@ function transform_change_derivatives(
 )
     py"""
     import desc 
-    import desc.profiles
+    import desc.transform
     import numpy as np  
 
     if isinstance($derivs, np.ndarray):
@@ -70,7 +71,7 @@ function transform_fit(
 )
     py"""
     import desc 
-    import desc.profiles
+    import desc.transform
     import numpy as np  
 
     if isinstance($x, np.ndarray):
@@ -94,11 +95,11 @@ function transform_load(
 )
     py"""
     import desc 
-    import desc.profiles
+    import desc.transform
     import numpy as np  
 
     def load():
-        return Transform.load(
+        return desc.Transform.load(
             $load_from, 
             file_format = $file_format
         )
@@ -115,6 +116,7 @@ function transform_project(
     py"""
     import desc 
     import numpy as np  
+    import desc.transform
 
     if isinstance($y, np.ndarray):
         new_y = np.ascontiguousarray($y)
@@ -130,8 +132,6 @@ function transform_project(
     output = py"load"()
 
 end 
-
-
 
 function transform_transform(
     transform, 

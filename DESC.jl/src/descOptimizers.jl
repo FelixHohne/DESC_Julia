@@ -21,6 +21,7 @@ function optimize_load(
 )
 py"""
 import desc
+import desc.optimize 
 
 def optimize_load():
     return desc.optimize.Optimizer.load(

@@ -150,8 +150,8 @@ function basis_evaluate(
     output = py"ev"()
 end
 
-function basis_get_idx(;
-    basis, 
+function basis_get_idx(
+    basis;
     L = 0, 
     M = 0, 
     N = 0, 
