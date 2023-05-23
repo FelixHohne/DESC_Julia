@@ -15,8 +15,8 @@ function get_deltas(
 
     def get_deltas():
         return desc.perturbations.get_deltas(
-            things1 = $things1, 
-            things2 = $things2
+            $things1, 
+            $things2
         )
     """
     output = py"get_deltas"()
@@ -67,12 +67,12 @@ function perturb(
 
     def perturb():
         return desc.perturbations.perturb(
-        eq = $eq, 
-        objective = $objective, 
-        constraints = $constraints, 
-        deltas = new_deltas, 
+        $eq, 
+        $objective, 
+        $constraints, 
+        new_deltas, 
         order = $order, 
-        tr_ratio = $new_tr_ratio, 
+        tr_ratio = new_tr_ratio, 
         weight = new_weight, 
         include_f = $include_f, 
         verbose = $verbose, 
@@ -109,7 +109,7 @@ import desc.perturbations
 import numpy as np  
 
 if isinstance($dR , np.ndarray):
-    new_dR = np.ascontiguousarray($dR )
+    new_dR = np.ascontiguousarray($dR)
     assert new_dR.flags['C_CONTIGUOUS']
 else:
     new_dR = $dR 
@@ -120,7 +120,7 @@ if isinstance($dZ, np.ndarray):
 else:
     new_dZ = $dZ 
 
-if isinstance($dL , np.ndarray):
+if isinstance($dL, np.ndarray):
     new_dL = np.ascontiguousarray($dL)
     assert new_dL.flags['C_CONTIGUOUS']
 else:
@@ -164,9 +164,9 @@ else:
 
 def perturb():
     return desc.perturbations.optimal_perturb(
-        eq = $eq, 
-        objective_f = $objective_f, 
-        objective_g = $objective_g, 
+        $eq, 
+        $objective_f, 
+        $objective_g, 
         dR = new_dR, 
         dZ = new_dZ, 
         dL = new_dL, 

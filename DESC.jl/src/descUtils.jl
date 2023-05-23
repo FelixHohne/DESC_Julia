@@ -35,7 +35,7 @@ function get_fixed_boundary_constraints(;
 end 
 
 function get_equilibrium_objective(; 
-    mode = "force", normalize = "true")
+    mode = "force", normalize = true)
 
     py"""
     import desc 

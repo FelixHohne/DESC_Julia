@@ -217,7 +217,7 @@ function profiles_compute(
 
     def compute():
         return $profile.compute(
-           params=new_params,
+           params = new_params,
            grid = $grid, 
            dr = $dr, 
            dt = $dt, 
@@ -377,7 +377,7 @@ function profiles_to_mtanh(
     else:
         new_pmin = $pmin
     
-        if isinstance($pmax, np.ndarray):
+    if isinstance($pmax, np.ndarray):
         new_pmax = np.ascontiguousarray($pmax)
         assert new_pmax.flags['C_CONTIGUOUS']
     else:
@@ -391,7 +391,7 @@ function profiles_to_mtanh(
             p0 = new_p0, 
             pmin = new_pmin, 
             pmax = new_pmax, 
-            **kwargs_dict
+            **$kwargs_dict
         )
     """
     output = py"compute"()
