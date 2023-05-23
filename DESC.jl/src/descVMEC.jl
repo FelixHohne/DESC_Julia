@@ -18,11 +18,12 @@ function vmecio_compute_coord_surfaces(
 
     py"""
     import desc 
+    import desc.vmec
 
     def vmec():
         return desc.vmec.VMECIO.compute_coord_surfaces(
-           equil = $equil, 
-           vmec_data = $vmec_data, 
+           $equil, 
+           $vmec_data, 
            Nr = $Nr, 
            Nt = $Nt, 
            Nz = $Nz, 
@@ -38,12 +39,13 @@ function vmecio_compute_theta_coords(
     xn, 
     s, 
     theta_star, 
-    zeta, 
+    zeta; 
     si = nothing
     )
     
     py"""
     import desc 
+    import desc.vmec
     if isinstance($lmns, np.ndarray):
         new_lmns = np.ascontiguousarray($lmns)
         assert new_lmns.flags['C_CONTIGUOUS']
@@ -87,11 +89,11 @@ function vmecio_compute_theta_coords(
         
     def vmec():
         return desc.vmec.VMECIO.compute_theta_coords(
-           lmns = new_lmns, 
-           xm = new_xm, 
-           s = new_s, 
-           theta_star = new_theta_star, 
-           zeta = new_zeta, 
+           new_lmns, 
+           new_xm, 
+           new_s, 
+           new_theta_star, 
+           new_zeta, 
            si = new_si
         )
     """
@@ -102,18 +104,18 @@ end
 function vmecio_load(
     path; 
     L = nothing, 
-    m = nothing, 
-    n = nothing, 
+    M = nothing, 
+    N = nothing, 
     spectral_indexing = "ansi", 
     profile = "iota"
-    
 ) 
     py"""
     import desc 
+    import desc.vmec
 
     def vmec():
         return desc.vmec.VMECIO.load(
-           path = $path, 
+           $path, 
            L = $L, 
            M = $M, 
            N = $N, 
@@ -138,11 +140,12 @@ function vmecio_plot_vmec_comparison(
 
     py"""
     import desc 
+    import desc.vmec
 
     def vmec():
         return desc.vmec.VMECIO.plot_vmec_comparison(
-           equil = $equil, 
-           vmec_data = $vmec_data, 
+           $equil, 
+           $vmec_data, 
            Nr = $Nr, 
            Nt = $Nt, 
            **$kwargs_dict
@@ -157,10 +160,11 @@ function vmecio_read_vmec_output(
 ) 
     py"""
     import desc 
+    import desc.vmec
 
     def vmec():
         return desc.vmec.VMECIO.vmecio_read_vmec_output(
-           fname = $fname
+           $fname
         )
     """
     output = py"vmec"()
@@ -175,11 +179,12 @@ function vmecio_save(
 ) 
     py"""
     import desc 
+    import desc.vmec
 
     def vmec():
         return desc.vmec.VMECIO.save(
-           eq = $eq, 
-           path = $path, 
+           $eq, 
+           $path, 
            surfs = $surfs, 
            verbose = $verbose
         )
@@ -201,6 +206,8 @@ function vmecio_interpolate(
     
     py"""
     import desc 
+    import desc.vmec
+
     if isinstance($Cmn, np.ndarray):
         new_Cmn = np.ascontiguousarray($Cmn)
         assert new_Cmn.flags['C_CONTIGUOUS']
@@ -231,7 +238,7 @@ function vmecio_interpolate(
         new_theta = $theta
 
     if isinstance($phi, np.ndarray):
-        new_phi= np.ascontiguousarray($phi)
+        new_phi = np.ascontiguousarray($phi)
         assert new_phi.flags['C_CONTIGUOUS']
     else:
         new_phi = $phi
@@ -244,12 +251,12 @@ function vmecio_interpolate(
         
     def vmec():
         return desc.vmec.VMECIO.vmec_interpolate(
-           Cmn = new_Cmn, 
-           Smn = new_Smn, 
-           xm = new_xm, 
-           xn = new_xn, 
-           theta = new_theta, 
-           phi = new_phi, 
+           new_Cmn, 
+           new_Smn, 
+           new_xm, 
+           new_xn, 
+           new_theta, 
+           new_phi, 
            s = new_s, 
            si = new_si, 
            sym = $sym 
